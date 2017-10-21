@@ -19,6 +19,7 @@ public:
 
 public:
 	p2List<PhysBody*> pinball;
+	p2List<PhysBody*> circles;
 
 	PhysBody* sensor;
 	bool sensed;
