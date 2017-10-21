@@ -18,17 +18,11 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 public:
-	p2List<PhysBody*> circles;
-	p2List<PhysBody*> boxes;
-//	p2List<PhysBody*> ricks;
 	p2List<PhysBody*> pinball;
 
 	PhysBody* sensor;
 	bool sensed;
 
-	SDL_Texture* ball;
-	SDL_Texture* box;
-	//SDL_Texture* rick;
 	SDL_Texture* pinball_tex;
 	uint bonus_fx;
 	p2Point<int> ray;

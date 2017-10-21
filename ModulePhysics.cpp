@@ -33,7 +33,7 @@ bool ModulePhysics::Start()
 	world->SetContactListener(this);
 	  
 	//Main pinball layer
-	//Part 1
+	//Part 1----------------------------------------------------
 	int pinball_shape[84] = {
 		165, 832,
 		24, 740,
@@ -80,8 +80,9 @@ bool ModulePhysics::Start()
 	};
 
 	App->scene_intro->pinball.add(CreateChain(0,0, pinball_shape, 84));
+	// ---------------------------------------------------------------
 
-	//Part 2
+	//Part 2------------------------------------------------------------
 	int pinball_shape2[58] = {
 		474, 835,
 		311, 835,
@@ -115,9 +116,10 @@ bool ModulePhysics::Start()
 	};
 
 	App->scene_intro->pinball.add(CreateChain(0, 0, pinball_shape2, 58));
-	
-	// Scenario parts
+	//--------------------------------------------------------------------
 
+	// Scenario parts
+	//Part 1 -------------------------------------------------------------
 	int scenario_shape1[32] = {
 		118, 130,
 		182, 102,
@@ -138,7 +140,7 @@ bool ModulePhysics::Start()
 	};
 
 	App->scene_intro->pinball.add(CreateChain(0,0, scenario_shape1, 32));
-
+	//-------------------------------------------------------------------
 		
 	return true;
 }
@@ -241,7 +243,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);

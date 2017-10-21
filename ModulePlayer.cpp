@@ -4,9 +4,12 @@
 #include "ModulePhysics.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
+#include "ModuleSceneIntro.h"
+#include "ModuleTextures.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	ball_tex = NULL;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -17,14 +20,22 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
+	ball_tex = App->textures->Load("pinball/ball.png");
+
+
+	// Create Ball
+//	App->scene_intro->circles.add(App->physics->CreateCircle(487,0, 15)); //Until there exists a launcher, the ball will be created and will fall
+//	App->scene_intro->circles.getLast()->data->listener = this;
+
+
 	// Create flippers
 
 	// Left flipper			------------------------------------------------------------
 
 	b2RevoluteJointDef revoluteJointDef;
 
-	flipperL = App->physics->CreateRectangle(350, 700, 80, 20);
-	pivotL = App->physics->CreateCircle(320, 700, 10, b2_staticBody);
+	flipperL = App->physics->CreateRectangle(170, 770, 80, 20);
+	pivotL = App->physics->CreateCircle(170, 770, 10, b2_staticBody);
 
 	revoluteJointDef.bodyA = flipperL->body;
 	revoluteJointDef.bodyB = pivotL->body;
@@ -45,8 +56,8 @@ bool ModulePlayer::Start()
 	// ---------------------------------------------------------------------------------
 	
 	// Right flipper		------------------------------------------------------------
-	flipperR = App->physics->CreateRectangle(450, 450, 80, 20);
-	pivotR = App->physics->CreateCircle(480, 700, 10, b2_staticBody);
+	flipperR = App->physics->CreateRectangle(327, 770, 80, 20);
+	pivotR = App->physics->CreateCircle(327, 770, 10, b2_staticBody);
 
 	revoluteJointDef.bodyA = flipperR->body;
 	revoluteJointDef.bodyB = pivotR->body;
@@ -63,7 +74,7 @@ bool ModulePlayer::Start()
 	jointR = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
 
 	// ---------------------------------------------------------------------------------
-
+	
 	return true;
 }
 
@@ -78,6 +89,8 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
+	// FLIPPER INPUT -----------------------------------------
+	
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
 		jointL->EnableMotor(true);
@@ -95,7 +108,15 @@ update_status ModulePlayer::Update()
 	{
 		jointR->EnableMotor(false);
 	}
+	// -------------------------------------------------------
 
+	// BALL BLIT-----------------------------------------------
+	
+	int x, y;
+	ball->GetPosition(x, y);
+	App->renderer->Blit(ball_tex, x, y, NULL, 1.0f, ball->GetRotation());
+		
+	// -------------------------------------------------------
 
 
 	return UPDATE_CONTINUE;

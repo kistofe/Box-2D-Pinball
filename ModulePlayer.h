@@ -17,6 +17,8 @@ public:
 private:
 
 public:
+	PhysBody* ball;
+	SDL_Texture* ball_tex;
 
 private:
 
