@@ -45,7 +45,7 @@ bool ModulePlayer::Start()
 	// ---------------------------------------------------------------------------------
 	
 	// Right flipper		------------------------------------------------------------
-	flipperR = App->physics->CreateRectangle(450, 450, 80, 20);
+	flipperR = App->physics->CreateRectangle(450, 700, 80, 20);
 	pivotR = App->physics->CreateCircle(480, 700, 10, b2_staticBody);
 
 	revoluteJointDef.bodyA = flipperR->body;
