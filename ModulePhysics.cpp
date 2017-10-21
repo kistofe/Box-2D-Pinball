@@ -142,6 +142,7 @@ bool ModulePhysics::Start()
 	App->scene_intro->pinball.add(CreateChain(0,0, scenario_shape1, 32));
 	//-------------------------------------------------------------------
 		
+
 	return true;
 }
 
@@ -164,7 +165,7 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type, float restitution)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -177,6 +178,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type)
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
+	fixture.restitution = restitution;
 
 	b->CreateFixture(&fixture);
 
@@ -373,6 +375,8 @@ update_status ModulePhysics::PostUpdate()
 
 	// If a body was selected we will attach a mouse joint to it
 	// so we can pull it around
+	// TODO 2: If a body was selected, create a mouse joint
+	// using mouse_joint class property
 	if (body_found != nullptr)
 	{
 		b2MouseJointDef def;
@@ -385,11 +389,17 @@ update_status ModulePhysics::PostUpdate()
 		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
 	}
 
+	// TODO 3: If the player keeps pressing the mouse button, update
+	// target position and draw a red line between both anchor points
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && mouse_joint)
 	{
+		b2Vec2 body_pos(PIXEL_TO_METERS(body_found->GetPosition()));
 		mouse_joint->SetTarget(mouse_pos);
+		App->renderer->DrawLine(body_pos.x, body_pos.y, mouse_pos.x, mouse_pos.y, 255, 0, 0, 0);
+
 	}
 
+	// TODO 4: If the player releases the mouse button, destroy the joint
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && mouse_joint)
 	{
 		world->DestroyJoint(mouse_joint);
