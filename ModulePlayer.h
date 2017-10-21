@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "Box2D/Box2D/Box2D.h"
 
 class ModulePlayer : public Module
 {
@@ -13,6 +14,17 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+private:
+
 public:
 
+private:
+
+	PhysBody* flipperL;
+	PhysBody* pivotL;
+	b2RevoluteJoint* jointL;
+
+	PhysBody* flipperR;
+	PhysBody* pivotR;
+	b2RevoluteJoint* jointR;
 };
