@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
+#include "ModuleSceneIntro.h"
 #include "p2Point.h"
 #include "math.h"
 
@@ -36,23 +37,89 @@ bool ModulePhysics::Start()
 	ground = world->CreateBody(&bd);
 
 	// big static circle as "ground" in the middle of the screen
-	int x = SCREEN_WIDTH / 2;
-	int y = SCREEN_HEIGHT / 1.5f;
-	int diameter = SCREEN_WIDTH / 2;
+	int x = SCREEN_WIDTH;
+	int y = SCREEN_HEIGHT;
+	//int diameter = SCREEN_WIDTH / 2;
 
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
-	b2Body* big_ball = world->CreateBody(&body);
+	b2Body* pinball_stage = world->CreateBody(&body);
 
-	b2CircleShape shape;
-	shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
+	//shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
+	int pinball_shape[132] = {
+		167, 831,
+		32, 742,
+		25, 736,
+		24, 621,
+		35, 598,
+		54, 590,
+		72, 590,
+		72, 568,
+		93, 568,
+		103, 556,
+		103, 540,
+		92, 527,
+		74, 528,
+		78, 512,
+		87, 503,
+		65, 461,
+		47, 402,
+		37, 355,
+		30, 301,
+		30, 44,
+		43, 29,
+		61, 29,
+		75, 45,
+		78, 101,
+		113, 75,
+		150, 53,
+		186, 39,
+		222, 33,
+		300, 33,
+		342, 41,
+		378, 55,
+		417, 79,
+		458, 114,
+		487, 157,
+		508, 205,
+		517, 252,
+		520, 833,
+		313, 833,
+		455, 735,
+		455, 620,
+		442, 596,
+		423, 587,
+		407, 586,
+		406, 568,
+		385, 566,
+		376, 556,
+		375, 538,
+		384, 528,
+		405, 527,
+		402, 514,
+		391, 500,
+		417, 457,
+		427, 422,
+		440, 371,
+		446, 333,
+		450, 289,
+		450, 220,
+		446, 193,
+		437, 170,
+		424, 145,
+		415, 121,
+		437, 142,
+		458, 171,
+		470, 197,
+		481, 245,
+		482, 830
+	};
 
-	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	big_ball->CreateFixture(&fixture);
-
+	App->scene_intro->pinball.add(CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), pinball_shape, 132));
+	
+	
 	return true;
 }
 
@@ -154,7 +221,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
