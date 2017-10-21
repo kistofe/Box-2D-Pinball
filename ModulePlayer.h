@@ -2,7 +2,10 @@
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "ModuleTextures.h"
 #include "Box2D/Box2D/Box2D.h"
+
+class PhysBody;
 
 class ModulePlayer : public Module
 {
@@ -17,8 +20,8 @@ public:
 private:
 
 public:
-	PhysBody* ball;
 	SDL_Texture* ball_tex;
+	SDL_Texture* flipper_tex;
 
 private:
 
@@ -26,6 +29,7 @@ private:
 	PhysBody* pivotL;
 	b2RevoluteJoint* jointL;
 
+	PhysBody* ball;
 	PhysBody* flipperR;
 	PhysBody* pivotR;
 	b2RevoluteJoint* jointR;

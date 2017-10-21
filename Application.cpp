@@ -39,6 +39,7 @@ Application::Application()
 	
 	// Player
 	AddModule(player);
+	
 }
 
 Application::~Application()

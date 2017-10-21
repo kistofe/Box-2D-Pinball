@@ -9,7 +9,7 @@
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	ball_tex = NULL;
+	ball_tex = flipper_tex = NULL;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -21,21 +21,21 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	ball_tex = App->textures->Load("pinball/ball.png");
-
-
+	flipper_tex = App->textures->Load("pinball/flipper.png");
+	
 	// Create Ball
-//	App->scene_intro->circles.add(App->physics->CreateCircle(487,0, 15)); //Until there exists a launcher, the ball will be created and will fall
-//	App->scene_intro->circles.getLast()->data->listener = this;
+	ball = App->physics->CreateCircle(180, 200, 15, b2_dynamicBody, 0.5f);
 
-
+	
 	// Create flippers
 
 	// Left flipper			------------------------------------------------------------
 
 	b2RevoluteJointDef revoluteJointDef;
 
-	flipperL = App->physics->CreateRectangle(170, 770, 80, 20);
-	pivotL = App->physics->CreateCircle(170, 770, 10, b2_staticBody);
+	flipperL = App->physics->CreateRectangle(170, 760, 80, 20);
+	pivotL = App->physics->CreateCircle(170, 760, 10, b2_staticBody);
+	flipperL->body->SetGravityScale(30.0f);
 
 	revoluteJointDef.bodyA = flipperL->body;
 	revoluteJointDef.bodyB = pivotL->body;
@@ -53,13 +53,14 @@ bool ModulePlayer::Start()
 	revoluteJointDef.enableMotor = false;
 
 	jointL = (b2RevoluteJoint*)	App->physics->world->CreateJoint(&revoluteJointDef);
+	
 	// ---------------------------------------------------------------------------------
 	
 	// Right flipper		------------------------------------------------------------
 
-	flipperR = App->physics->CreateRectangle(327, 770, 80, 20);
-	pivotR = App->physics->CreateCircle(327, 770, 10, b2_staticBody);
-
+	flipperR = App->physics->CreateRectangle(327, 760, 80, 20);
+	pivotR = App->physics->CreateCircle(327, 760, 10, b2_staticBody);
+	flipperR->body->SetGravityScale(30.0f);
 
 	revoluteJointDef.bodyA = flipperR->body;
 	revoluteJointDef.bodyB = pivotR->body;
@@ -74,7 +75,6 @@ bool ModulePlayer::Start()
 	revoluteJointDef.maxMotorTorque = 1500;
 
 	jointR = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
-
 	// ---------------------------------------------------------------------------------
 	
 	return true;
@@ -111,15 +111,20 @@ update_status ModulePlayer::Update()
 		jointR->EnableMotor(false);
 	}
 	// -------------------------------------------------------
-
-	// BALL BLIT-----------------------------------------------
-	
 	int x, y;
+
+	// FLIPPER BLITS -----------------------------------------
+	//Left Flipper
+	pivotL->GetPosition(x, y);
+	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, 0, flipperL->GetRotation(), flipperL->GetRotation());//Not working
+
+	//Right Flipper
+
+	// -------------------------------------------------------
+	
+	//BALL BLIT
 	ball->GetPosition(x, y);
 	App->renderer->Blit(ball_tex, x, y, NULL, 1.0f, ball->GetRotation());
-		
-	// -------------------------------------------------------
-
 
 	return UPDATE_CONTINUE;
 }
