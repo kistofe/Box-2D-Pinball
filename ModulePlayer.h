@@ -1,4 +1,3 @@
-#pragma once
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
@@ -20,8 +19,10 @@ public:
 private:
 
 public:
+
 	SDL_Texture* ball_tex;
 	SDL_Texture* flipper_tex;
+
 
 private:
 
@@ -33,4 +34,11 @@ private:
 	PhysBody* flipperR;
 	PhysBody* pivotR;
 	b2RevoluteJoint* jointR;
+
+	PhysBody* launcher;
+	PhysBody* launcher_pivot;
+	b2PrismaticJoint* jointLauncher;
+
+	//PhysBody* ball;
+	//SDL_Texture* ball_tex;
 };
