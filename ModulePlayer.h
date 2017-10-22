@@ -19,7 +19,15 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 private:
+	//Function to create both flippers
+	void CreateFlippers();
 
+	//Function to create ball launcher
+	void CreateLauncher();
+
+	//Function to create ball
+	void CreateBall();
+	
 public:
 
 	SDL_Texture* ball_tex;
@@ -32,7 +40,6 @@ private:
 	PhysBody* pivotL;
 	b2RevoluteJoint* jointL;
 
-	PhysBody* ball;
 	PhysBody* flipperR;
 	PhysBody* pivotR;
 	b2RevoluteJoint* jointR;
@@ -41,6 +48,5 @@ private:
 	PhysBody* launcher_pivot;
 	b2PrismaticJoint* jointLauncher;
 
-	//PhysBody* ball;
-	//SDL_Texture* ball_tex;
+	PhysBody* ball;
 };

@@ -4,6 +4,8 @@
 #include "p2Point.h"
 #include "Globals.h"
 
+#include "Box2D/Box2D/Box2D.h"
+
 class PhysBody;
 
 class ModuleSceneIntro : public Module
@@ -17,15 +19,20 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
+private:
+
 public:
 	p2List<PhysBody*> pinball;
 	p2List<PhysBody*> circles;
 
-	PhysBody* sensor;
+	PhysBody* dying_sensor;
 	bool sensed;
 
 	SDL_Texture* pinball_tex;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
+
+private:
+
 };

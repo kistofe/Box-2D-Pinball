@@ -29,9 +29,10 @@ bool ModuleSceneIntro::Start()
 	pinball_tex = App->textures->Load("pinball/Pinball.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
-	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
-
-
+	//Sensor Rectangle to detect when the player loses
+	dying_sensor = App->physics->CreateRectangleSensor(0 , SCREEN_HEIGHT + 50, SCREEN_WIDTH, 50);
+	
+	//Create every scenario part
 	App->physics->AddPinballParts();
 
 	return ret;
@@ -128,3 +129,4 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
 	}*/
 }
+
