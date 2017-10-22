@@ -32,117 +32,6 @@ bool ModulePhysics::Start()
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
 	  
-	//Main pinball layer
-	//Part 1----------------------------------------------------
-	int pinball_shape[84] = {
-		165, 832,
-		24, 740,
-		23, 620,
-		36, 599,
-		53, 589,
-		73, 589,
-		73, 570,
-		95, 567,
-		104, 555,
-		103, 540,
-		94, 527,
-		75, 527,
-		79, 513,
-		87, 503,
-		63, 462,
-		50, 414,
-		38, 362,
-		30, 303,
-		29, 47,
-		40, 30,
-		64, 30,
-		76, 46,
-		78, 101,
-		114, 73,
-		150, 51,
-		186, 40,
-		218, 34,
-		298, 32,
-		345, 42,
-		385, 60,
-		432, 92,
-		458, 115,
-		489, 160,
-		505, 196,
-		515, 244,
-		519, 263,
-		518, 833,
-		576, 833,
-		575, 0,
-		0, 0,
-		0, 833,
-		158, 833
-	};
-
-	App->scene_intro->pinball.add(CreateChain(0,0, pinball_shape, 84));
-	// ---------------------------------------------------------------
-
-	//Part 2------------------------------------------------------------
-	int pinball_shape2[58] = {
-		474, 835,
-		311, 835,
-		454, 737,
-		455, 622,
-		441, 597,
-		424, 589,
-		407, 587,
-		406, 570,
-		384, 566,
-		376, 556,
-		375, 538,
-		382, 528,
-		406, 526,
-		399, 511,
-		391, 500,
-		411, 473,
-		423, 442,
-		431, 411,
-		439, 377,
-		446, 331,
-		450, 288,
-		450, 219,
-		435, 163,
-		415, 122,
-		439, 144,
-		460, 182,
-		473, 217,
-		481, 250,
-		480, 832
-	};
-
-	App->scene_intro->pinball.add(CreateChain(0, 0, pinball_shape2, 58));
-	//--------------------------------------------------------------------
-
-	// Scenario parts
-	//Part 1 -------------------------------------------------------------
-	int scenario_shape1[32] = {
-		118, 130,
-		182, 102,
-		212, 94,
-		269, 93,
-		307, 102,
-		333, 112,
-		352, 120,
-		345, 109,
-		308, 85,
-		280, 72,
-		262, 66,
-		229, 66,
-		196, 72,
-		161, 88,
-		131, 107,
-		115, 123
-	};
-
-	App->scene_intro->pinball.add(CreateChain(0,0, scenario_shape1, 32));
-	//-------------------------------------------------------------------
-		
-
 	return true;
 }
 
@@ -276,6 +165,149 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 	return pbody;
 }
 
+void ModulePhysics::AddPinballParts()
+{
+	//Main pinball layer
+	//Part 1----------------------------------------------------
+	int pinball_shape[84] = {
+		165, 832,
+		24, 740,
+		23, 620,
+		36, 599,
+		53, 589,
+		73, 589,
+		73, 570,
+		95, 567,
+		104, 555,
+		103, 540,
+		94, 527,
+		75, 527,
+		79, 513,
+		87, 503,
+		63, 462,
+		50, 414,
+		38, 362,
+		30, 303,
+		29, 47,
+		40, 30,
+		64, 30,
+		76, 46,
+		78, 101,
+		114, 73,
+		150, 51,
+		186, 40,
+		218, 34,
+		298, 32,
+		345, 42,
+		385, 60,
+		432, 92,
+		458, 115,
+		489, 160,
+		505, 196,
+		515, 244,
+		519, 263,
+		518, 833,
+		576, 833,
+		575, 0,
+		0, 0,
+		0, 833,
+		158, 833
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, pinball_shape, 84));
+	// ---------------------------------------------------------------
+
+	//Part 2------------------------------------------------------------
+	int pinball_shape2[58] = {
+		474, 835,
+		311, 835,
+		454, 737,
+		455, 622,
+		441, 597,
+		424, 589,
+		407, 587,
+		406, 570,
+		384, 566,
+		376, 556,
+		375, 538,
+		382, 528,
+		406, 526,
+		399, 511,
+		391, 500,
+		411, 473,
+		423, 442,
+		431, 411,
+		439, 377,
+		446, 331,
+		450, 288,
+		450, 219,
+		435, 163,
+		415, 122,
+		439, 144,
+		460, 182,
+		473, 217,
+		481, 250,
+		480, 832
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, pinball_shape2, 58));
+	//--------------------------------------------------------------------
+
+	// Scenario parts
+	//Part 1 -------------------------------------------------------------
+	int scenario_shape1[32] = {
+		118, 130,
+		182, 102,
+		212, 94,
+		269, 93,
+		307, 102,
+		333, 112,
+		352, 120,
+		345, 109,
+		308, 85,
+		280, 72,
+		262, 66,
+		229, 66,
+		196, 72,
+		161, 88,
+		131, 107,
+		115, 123
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape1, 32));
+	//-------------------------------------------------------------------
+
+	//Part 2 -----------------------------------------------------------
+	int scenario_shape2[16] = {
+		328, 781,
+		420, 719,
+		420, 621,
+		413, 617,
+		408, 621,
+		408, 692,
+		319, 756,
+		326, 776
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape2, 16));
+	//-------------------------------------------------------------------
+
+	//Part 3
+	int scenario_shape3[16] = {
+		151, 780,
+		61, 723,
+		61, 620,
+		66, 615,
+		71, 620,
+		73, 694,
+		160, 755,
+		152, 774
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape3, 16));
+	//-------------------------------------------------------------------
+}
+
 // 
 update_status ModulePhysics::PostUpdate()
 {
@@ -359,7 +391,6 @@ update_status ModulePhysics::PostUpdate()
 				break;
 			}
 
-			// TODO 1: If mouse button 1 is pressed ...
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
 				if (f->TestPoint(mouse_pos) && !body_found)
@@ -375,8 +406,6 @@ update_status ModulePhysics::PostUpdate()
 
 	// If a body was selected we will attach a mouse joint to it
 	// so we can pull it around
-	// TODO 2: If a body was selected, create a mouse joint
-	// using mouse_joint class property
 	if (body_found != nullptr)
 	{
 		b2MouseJointDef def;
@@ -389,17 +418,11 @@ update_status ModulePhysics::PostUpdate()
 		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
 	}
 
-	// TODO 3: If the player keeps pressing the mouse button, update
-	// target position and draw a red line between both anchor points
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && mouse_joint)
 	{
-		b2Vec2 body_pos(PIXEL_TO_METERS(body_found->GetPosition()));
 		mouse_joint->SetTarget(mouse_pos);
-		App->renderer->DrawLine(body_pos.x, body_pos.y, mouse_pos.x, mouse_pos.y, 255, 0, 0, 0);
-
 	}
 
-	// TODO 4: If the player releases the mouse button, destroy the joint
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && mouse_joint)
 	{
 		world->DestroyJoint(mouse_joint);

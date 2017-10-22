@@ -31,7 +31,8 @@ bool ModuleSceneIntro::Start()
 
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
-	//App->physics->CreateCircle(500, 500, 10, b2_staticBody, 7.0f);
+
+	App->physics->AddPinballParts();
 
 	return ret;
 }

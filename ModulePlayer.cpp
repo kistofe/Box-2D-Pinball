@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleTextures.h"
+#include "ModuleAudio.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -26,7 +27,8 @@ bool ModulePlayer::Start()
 	
 
 	// Create Ball
-	ball = App->physics->CreateCircle(180, 200, 15, b2_dynamicBody, 0.5f);
+	ball = App->physics->CreateCircle(500, 740, 15, b2_dynamicBody, 0.35f);
+	ball->listener = this; //calls OnCollision function
 
 	
 	// Create flippers
@@ -36,8 +38,8 @@ bool ModulePlayer::Start()
 	b2RevoluteJointDef revoluteJointDef;
 
 
-	flipperL = App->physics->CreateRectangle(170, 760, 80, 20);
-	pivotL = App->physics->CreateCircle(170, 760, 10, b2_staticBody);
+	flipperL = App->physics->CreateRectangle(170, 770, 80, 20);
+	pivotL = App->physics->CreateCircle(170, 770, 10, b2_staticBody);
 	flipperL->body->SetGravityScale(30.0f);
 
 	revoluteJointDef.bodyA				= flipperL->body;
@@ -63,8 +65,8 @@ bool ModulePlayer::Start()
 	// Right flipper		------------------------------------------------------------
 
 
-	flipperR = App->physics->CreateRectangle(327, 760, 80, 20);
-	pivotR = App->physics->CreateCircle(327, 760, 10, b2_staticBody);
+	flipperR = App->physics->CreateRectangle(327, 770, 80, 20);
+	pivotR = App->physics->CreateCircle(327, 770, 10, b2_staticBody);
 	flipperR->body->SetGravityScale(30.0f);
 
 	revoluteJointDef.bodyA				= flipperR->body;
@@ -83,10 +85,11 @@ bool ModulePlayer::Start()
 
 	// ---------------------------------------------------------------------------------
 
+
 	// Ball launcher		------------------------------------------------------------
 
-	launcher							= App->physics->CreateRectangle(800, 500, 20, 80);
-	launcher_pivot						= App->physics->CreateRectangle(800, 550, 20, 20, b2_staticBody);
+	launcher							= App->physics->CreateRectangle(500, 780, 30, 80);
+	launcher_pivot						= App->physics->CreateRectangle(500, 830, 30, 20, b2_staticBody);
 
 	b2PrismaticJointDef prismaticJointDef;
 
@@ -124,6 +127,13 @@ bool ModulePlayer::CleanUp()
 	LOG("Unloading player");
 
 	return true;
+}
+
+void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
+{
+	int x, y;
+
+	App->audio->PlayFx(App->scene_intro->bonus_fx);
 }
 
 // Update: draw background
