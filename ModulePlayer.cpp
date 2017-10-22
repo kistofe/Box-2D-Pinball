@@ -59,31 +59,29 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 
 void ModulePlayer::CreateFlippers()
 {
-	// Create flippers
-
 	// Left flipper			------------------------------------------------------------
 
 	b2RevoluteJointDef revoluteJointDef;
 
 
-	flipperL = App->physics->CreateRectangle(170, 770, 80, 20);
-	pivotL = App->physics->CreateCircle(170, 770, 10, b2_staticBody);
+	flipperL								= App->physics->CreateRectangle(170, 770, 65, 20);
+	pivotL									= App->physics->CreateCircle(170, 770, 10, b2_staticBody);
 	flipperL->body->SetGravityScale(30.0f);
 
-	revoluteJointDef.bodyA = flipperL->body;
-	revoluteJointDef.bodyB = pivotL->body;
+	revoluteJointDef.bodyA					= flipperL->body;
+	revoluteJointDef.bodyB					= pivotL->body;
 
-	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), 0); // Set the pivot point of the rectangle where the center of the circle is
-	revoluteJointDef.localAnchorB.Set(0, 0); // Set the pivot point of the circle on its center
-	revoluteJointDef.collideConnected = false;
+	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), 0);			// Set the pivot point of the rectangle where the center of the circle is
+	revoluteJointDef.localAnchorB.Set(0, 0);							// Set the pivot point of the circle on its center
+	revoluteJointDef.collideConnected		= false;
 
-	revoluteJointDef.enableLimit = true;					// Angle limits
-	revoluteJointDef.upperAngle = 210 * DEGTORAD;
-	revoluteJointDef.lowerAngle = 150 * DEGTORAD;
+	revoluteJointDef.enableLimit			= true;						// Angle limits
+	revoluteJointDef.upperAngle				= 210 * DEGTORAD;
+	revoluteJointDef.lowerAngle				= 150 * DEGTORAD;
 
-	revoluteJointDef.motorSpeed = 1500.0f * DEGTORAD;		// Motor
-	revoluteJointDef.maxMotorTorque = 1500;
-	revoluteJointDef.enableMotor = false;
+	revoluteJointDef.motorSpeed				= 1500.0f * DEGTORAD;		// Motor
+	revoluteJointDef.maxMotorTorque			= 1500;
+	revoluteJointDef.enableMotor			= false;
 
 
 	jointL = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
@@ -93,21 +91,21 @@ void ModulePlayer::CreateFlippers()
 	// Right flipper		------------------------------------------------------------
 
 
-	flipperR = App->physics->CreateRectangle(327, 770, 80, 20);
-	pivotR = App->physics->CreateCircle(327, 770, 10, b2_staticBody);
+	flipperR								= App->physics->CreateRectangle(318, 700, 65, 20);
+	pivotR									= App->physics->CreateCircle(318, 770, 10, b2_staticBody);
 	flipperR->body->SetGravityScale(30.0f);
 
-	revoluteJointDef.bodyA = flipperR->body;
-	revoluteJointDef.bodyB = pivotR->body;
+	revoluteJointDef.bodyA					= flipperR->body;
+	revoluteJointDef.bodyB					= pivotR->body;
 
 	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(-30), 0);		// Set the pivot point of the rectangle where the center of the circle is
 	revoluteJointDef.localAnchorB.Set(0, 0);						// Set the pivot point of the circle on its center
 
-	revoluteJointDef.upperAngle = 210 * DEGTORAD;			// Angle limits
-	revoluteJointDef.lowerAngle = 150 * DEGTORAD;
+	revoluteJointDef.upperAngle				= 210 * DEGTORAD;			// Angle limits
+	revoluteJointDef.lowerAngle				= 150 * DEGTORAD;
 
-	revoluteJointDef.motorSpeed = -1500.0f * DEGTORAD;		// Motor
-	revoluteJointDef.maxMotorTorque = 1500;
+	revoluteJointDef.motorSpeed				= -1500.0f * DEGTORAD;		// Motor
+	revoluteJointDef.maxMotorTorque			= 1500;
 
 	jointR = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
 
