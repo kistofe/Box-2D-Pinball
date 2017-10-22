@@ -47,14 +47,10 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 
 	App->audio->PlayFx(App->scene_intro->bonus_fx);
 
-	if (bodyB == App->scene_intro->dying_sensor)
+	/*if (bodyB == App->scene_intro->dying_sensor)
 	{
-		if (ball)
-			ball->~PhysBody();
-
-		else	
-			CreateBall();
-	}
+		bodyA->body->SetTransform(b2Vec2( 500, 740 ), bodyA->GetRotation());
+	}*/
 }
 
 void ModulePlayer::CreateFlippers()
@@ -62,7 +58,7 @@ void ModulePlayer::CreateFlippers()
 	// Left flipper			------------------------------------------------------------
 
 	b2RevoluteJointDef revoluteJointDef;
-
+	
 
 	flipperL								= App->physics->CreateRectangle(170, 770, 65, 20);
 	pivotL									= App->physics->CreateCircle(170, 770, 10, b2_staticBody);

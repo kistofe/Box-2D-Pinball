@@ -168,7 +168,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 void ModulePhysics::AddPinballParts()
 {
 	//Main pinball layer
-	//Part 1----------------------------------------------------
+	//Part 1
 	int pinball_shape[84] = {
 		165, 832,
 		24, 740,
@@ -217,7 +217,7 @@ void ModulePhysics::AddPinballParts()
 	App->scene_intro->pinball.add(CreateChain(0, 0, pinball_shape, 84));
 	// ---------------------------------------------------------------
 
-	//Part 2------------------------------------------------------------
+	//Part 2
 	int pinball_shape2[58] = {
 		474, 835,
 		311, 835,
@@ -254,7 +254,7 @@ void ModulePhysics::AddPinballParts()
 	//--------------------------------------------------------------------
 
 	// Scenario parts
-	//Part 1 -------------------------------------------------------------
+	//Part 1 
 	int scenario_shape1[32] = {
 		118, 130,
 		182, 102,
@@ -277,7 +277,7 @@ void ModulePhysics::AddPinballParts()
 	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape1, 32));
 	//-------------------------------------------------------------------
 
-	//Part 2 -----------------------------------------------------------
+	//Part 2 
 	int scenario_shape2[16] = {
 		328, 781,
 		420, 719,
@@ -292,7 +292,7 @@ void ModulePhysics::AddPinballParts()
 	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape2, 16));
 	//-------------------------------------------------------------------
 
-	//Part 3
+	//Part 3 
 	int scenario_shape3[16] = {
 		151, 780,
 		61, 723,
@@ -306,6 +306,88 @@ void ModulePhysics::AddPinballParts()
 
 	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape3, 16));
 	//-------------------------------------------------------------------
+
+	//Part 4 
+	int scenario_shape4[34] = {
+		119, 456,
+		135, 439,
+		134, 429,
+		113, 401,
+		102, 376,
+		93, 349,
+		87, 322,
+		87, 298,
+		89, 273,
+		91, 257,
+		78, 268,
+		73, 296,
+		72, 343,
+		81, 378,
+		90, 404,
+		101, 433,
+		116, 452
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape4, 34));
+	//--------------------------------------------------------------------
+
+	//Part 5
+	int scenario_shape5[28] = {
+		181, 389,
+		201, 371,
+		198, 341,
+		157, 299,
+		142, 272,
+		140, 245,
+		148, 229,
+		149, 199,
+		132, 241,
+		129, 325,
+		133, 339,
+		139, 361,
+		154, 382,
+		175, 388
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape5, 28));
+	//-------------------------------------------------------------------
+
+	//Part 6
+	int scenario_shape6[48] = {
+		315, 349,
+		329, 250,
+		331, 148,
+		360, 167,
+		384, 193,
+		399, 222,
+		406, 243,
+		406, 343,
+		397, 384,
+		385, 417,
+		363, 453,
+		346, 441,
+		345, 429,
+		367, 402,
+		380, 369,
+		386, 346,
+		393, 315,
+		393, 292,
+		386, 298,
+		361, 298,
+		347, 295,
+		347, 317,
+		329, 361,
+		319, 353
+	};
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape6, 48));
+	//-------------------------------------------------------------------
+
+	//Part 7 & 8
+	App->scene_intro->pinball.add(CreateRectangle(207, 167, 18, 55, b2_staticBody));
+	App->scene_intro->pinball.add(CreateRectangle(273, 152, 18, 45, b2_staticBody));
+	//-------------------------------------------------------------------
+
+
 }
 
 // 
@@ -507,9 +589,6 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 	return ret;
 }
 
-PhysBody::~PhysBody()
-{
-}
 
 void ModulePhysics::BeginContact(b2Contact* contact)
 {

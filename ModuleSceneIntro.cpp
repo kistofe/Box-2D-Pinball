@@ -10,7 +10,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = NULL;
+	pinball_tex = bouncer_tex = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -27,6 +27,7 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	pinball_tex = App->textures->Load("pinball/Pinball.png");
+	//bouncer_tex = App->textures->Load("pinball/bouncer.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	//Sensor Rectangle to detect when the player loses
@@ -34,6 +35,7 @@ bool ModuleSceneIntro::Start()
 	
 	//Create every scenario part
 	App->physics->AddPinballParts();
+	AddBouncers();
 
 	return ret;
 }
@@ -56,12 +58,12 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+/*	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 15, b2_dynamicBody, 0.5f));
 		circles.getLast()->data->listener = this;
 	}
-
+	*/
 
 	// Prepare for raycast ------------------------------------------------------
 	
@@ -83,16 +85,16 @@ update_status ModuleSceneIntro::Update()
 		break;
 	}
 
-	c = circles.getFirst();
+	/*c = bouncers.getFirst();
 
 	while (c != NULL)
 	{
 		int x, y;
 		c->data->GetPosition(x, y);
 		if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(App->player->ball_tex, x, y, NULL, 1.0f, c->data->GetRotation());
+			App->renderer->Blit(bouncer_tex, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
-	}
+	}*/
 
 	// ray -----------------
 	if(ray_on == true)
@@ -128,5 +130,12 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		bodyB->GetPosition(x, y);
 		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
 	}*/
+}
+
+void ModuleSceneIntro::AddBouncers()
+{
+	bouncers.add(App->physics->CreateCircle(198, 257, 27, b2_staticBody, 3.0f));
+	bouncers.add(App->physics->CreateCircle(274, 227, 27, b2_staticBody, 3.0f));
+	bouncers.add(App->physics->CreateCircle(255, 312, 27, b2_staticBody, 3.0f));
 }
 

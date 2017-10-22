@@ -21,14 +21,17 @@ public:
 
 private:
 
+	void AddBouncers();
+
 public:
 	p2List<PhysBody*> pinball;
-	p2List<PhysBody*> circles;
+	p2List<PhysBody*> bouncers;
 
 	PhysBody* dying_sensor;
 	bool sensed;
 
 	SDL_Texture* pinball_tex;
+	SDL_Texture* bouncer_tex;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
