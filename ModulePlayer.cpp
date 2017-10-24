@@ -244,7 +244,6 @@ update_status ModulePlayer::Update()
 
 	// ----------------------------------------------------------
 	
-	LOG("ACTUAL SCORE: %d", score);
 	return UPDATE_CONTINUE;
 }
 
