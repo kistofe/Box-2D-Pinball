@@ -5,6 +5,7 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleSceneIntro.h"
+#include "ModuleWindow.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 
@@ -168,7 +169,7 @@ void ModulePlayer::CreateLauncher()
 void ModulePlayer::CreateBall()
 {
 	// Create Ball
-	ball = App->physics->CreateCircle(500, 750, 13, b2_dynamicBody, 0.35f);
+	ball = App->physics->CreateCircle(500, 750, 13, b2_dynamicBody, 0.25f);
 	ball->listener = this; //calls OnCollision function
 }
 
@@ -233,6 +234,13 @@ update_status ModulePlayer::Update()
 	//BALL BLIT
 	ball->GetPosition(x, y);
 	App->renderer->Blit(ball_tex, x, y, NULL, 1.0f, ball->GetRotation());
+
+	// ----------------------------------------------------------
+
+	// Set score in the title
+
+	tmp->create("[POKEMON PINBALL] | SCORE: %d | BALLS LEFT: %d", score, tries);
+	App->window->SetTitle(tmp->GetString());
 
 	// ----------------------------------------------------------
 	

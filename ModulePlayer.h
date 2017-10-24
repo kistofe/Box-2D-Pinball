@@ -1,8 +1,10 @@
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "p2SString.h"
 #include "ModuleTextures.h"
 #include "Box2D/Box2D/Box2D.h"
+#include <string>
 
 class PhysBody;
 
@@ -51,5 +53,7 @@ private:
 	b2PrismaticJoint* jointLauncher;
 
 	PhysBody* ball;
+
+	p2SString* tmp = new p2SString("[POKEMON PINBALL] | SCORE: %d", score);
 
 };
