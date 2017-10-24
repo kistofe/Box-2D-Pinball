@@ -26,8 +26,11 @@ private:
 public:
 	p2List<PhysBody*> pinball;
 	p2List<PhysBody*> bouncers;
-
+	
+	//sensors
 	PhysBody* dying_sensor;
+	PhysBody* arrow_sensor_right1;
+	
 	bool sensed;
 
 	SDL_Texture* pinball_tex;

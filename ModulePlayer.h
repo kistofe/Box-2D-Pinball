@@ -32,7 +32,9 @@ public:
 
 	SDL_Texture* ball_tex;
 	SDL_Texture* flipper_tex;
-
+	
+	uint score = 0;
+	uint tries = 3;
 
 private:
 
@@ -49,4 +51,5 @@ private:
 	b2PrismaticJoint* jointLauncher;
 
 	PhysBody* ball;
+
 };

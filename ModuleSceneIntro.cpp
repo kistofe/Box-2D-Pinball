@@ -26,17 +26,19 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	pinball_tex = App->textures->Load("pinball/Pinball.png");
+	pinball_tex = App->textures->Load("pinball/images/Pinball.png");
 	//bouncer_tex = App->textures->Load("pinball/bouncer.png");
-	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
+	bonus_fx = App->audio->LoadFx("pinball/audio/bonus.wav");
 
 	//Sensor Rectangle to detect when the player loses
-	dying_sensor = App->physics->CreateRectangleSensor(0 , SCREEN_HEIGHT + 50, SCREEN_WIDTH, 50);
+	dying_sensor = App->physics->CreateRectangleSensor(0 , SCREEN_HEIGHT +  50, SCREEN_WIDTH, 50);
 	
 	//Create every scenario part
 	App->physics->AddPinballParts();
 	AddBouncers();
 
+	//Creating sensors to animations
+	arrow_sensor_right1 = App->physics->CreateRectangleSensor(367, 480, 120, 45, 90.075);
 	return ret;
 }
 
@@ -51,17 +53,11 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	/*if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;
 		ray.x = App->input->GetMouseX();
 		ray.y = App->input->GetMouseY();
-	}
-
-/*	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 15, b2_dynamicBody, 0.5f));
-		circles.getLast()->data->listener = this;
 	}
 	*/
 
@@ -134,8 +130,8 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 void ModuleSceneIntro::AddBouncers()
 {
-	bouncers.add(App->physics->CreateCircle(198, 257, 27, b2_staticBody, 3.0f));
-	bouncers.add(App->physics->CreateCircle(274, 227, 27, b2_staticBody, 3.0f));
-	bouncers.add(App->physics->CreateCircle(255, 312, 27, b2_staticBody, 3.0f));
+	bouncers.add(App->physics->CreateCircle(198, 257, 27, b2_staticBody, 1.5f, 20));
+	bouncers.add(App->physics->CreateCircle(274, 227, 27, b2_staticBody, 1.5f, 20));
+	bouncers.add(App->physics->CreateCircle(255, 312, 27, b2_staticBody, 1.5f, 20));
 }
 

@@ -54,7 +54,7 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type, float restitution)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type, float restitution, uint _score)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -75,11 +75,12 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type,
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
+	pbody->score = _score;
 
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type, float restitution, uint _score)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -92,6 +93,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 	b2FixtureDef fixture;
 	fixture.shape = &box;
 	fixture.density = 1.0f;
+	fixture.restitution = restitution;
 
 	b->CreateFixture(&fixture);
 
@@ -100,17 +102,19 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 	b->SetUserData(pbody);
 	pbody->width = width * 0.5f;
 	pbody->height = height * 0.5f;
+	pbody->score = _score;
 
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, float angle, uint _score)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
+	b->SetTransform(body.position, angle);
 
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
@@ -127,18 +131,20 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	b->SetUserData(pbody);
 	pbody->width = width;
 	pbody->height = height;
+	pbody->score = _score;
 
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float restitution, uint _score)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	
 
 	b2Body* b = world->CreateBody(&body);
-
+	
 	b2ChainShape shape;
 	b2Vec2* p = new b2Vec2[size / 2];
 
@@ -152,6 +158,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
+	fixture.restitution = restitution;
 
 	b->CreateFixture(&fixture);
 
@@ -161,6 +168,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = 0;
+	pbody->score = _score;
 
 	return pbody;
 }
@@ -379,6 +387,7 @@ void ModulePhysics::AddPinballParts()
 		329, 361,
 		319, 353
 	};
+
 	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape6, 48));
 	//-------------------------------------------------------------------
 
@@ -386,6 +395,48 @@ void ModulePhysics::AddPinballParts()
 	App->scene_intro->pinball.add(CreateRectangle(207, 167, 18, 55, b2_staticBody));
 	App->scene_intro->pinball.add(CreateRectangle(273, 152, 18, 45, b2_staticBody));
 	//-------------------------------------------------------------------
+
+	//Part 9
+	int scenario_shape9[8] = {
+		336, 709,
+		370, 681,
+		372, 631,
+		338, 703
+	};
+
+	//Main part
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape9, 8));
+	//External part with restitution
+	int secondary_shape[8] = {
+		363, 626,
+		326, 700,
+		332, 700,
+		367, 629
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, secondary_shape, 8, 2.0f, 20));
+	// ------------------------------------------------------------------
+
+	//Part 10
+	int scenario_shape10[8] = {
+		106, 632,
+		106, 680,
+		144, 709,
+		110, 637
+	};
+
+	//Main part
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape10, 8));
+	//External part with restitution
+	int secondary_shape2[8] = {
+		114, 626,
+		152, 701,
+		144, 697,
+		110, 629
+	};
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, secondary_shape2, 8, 2.0f, 20));
+	// -----------------------------------------------------------------
 
 
 }
