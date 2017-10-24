@@ -169,6 +169,33 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float 
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = 0;
 	pbody->score = _score;
+	
+	return pbody;
+}
+
+PhysBody * ModulePhysics::CreateCircleSensor(int x, int y, int radius, uint _score)
+{
+
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+	fixture.isSensor = true;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+	pbody->score = _score;
 
 	return pbody;
 }
@@ -301,18 +328,18 @@ void ModulePhysics::AddPinballParts()
 	//-------------------------------------------------------------------
 
 	//Part 3 
-	int scenario_shape3[16] = {
-		151, 780,
-		61, 723,
-		61, 620,
-		66, 615,
-		71, 620,
-		73, 694,
-		160, 755,
-		152, 774
+	int scenario_shape3[14] = {
+		71, 619,
+		61, 619,
+		60, 718,
+		151, 781,
+		160, 757,
+		72, 691,
+		71, 624
 	};
 
-	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape3, 16));
+
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape3, 14));
 	//-------------------------------------------------------------------
 
 	//Part 4 

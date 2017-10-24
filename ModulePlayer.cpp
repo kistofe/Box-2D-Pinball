@@ -45,8 +45,7 @@ bool ModulePlayer::CleanUp()
 void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 {
 
-	App->audio->PlayFx(App->scene_intro->bonus_fx);
-
+	
 	if (bodyB == App->scene_intro->dying_sensor)
 	{
 		/*int x, y;
@@ -57,15 +56,28 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 		tries -= 1;
 	}
 	
-
+	
 	if (bodyB->score != 0)//if BodyB is found in pinball list or bouncer list, enter
 	{
+		App->audio->PlayFx(App->scene_intro->bonus_fx);
 		score += bodyB->score;
 	}
 
-	if (bodyB != App->scene_intro->arrow_sensor_right1)
+	if (bodyB == App->scene_intro->ball_catcher)
 	{
+		uint timer = SDL_GetTicks();
+		uint total_time = timer + 3000;
 
+		ball->body->SetLinearVelocity(b2Vec2(0, 0));
+		ball->body->SetGravityScale(-GRAVITY_Y);
+
+		if (timer >= total_time)
+		{
+			ball->body->ApplyLinearImpulse(b2Vec2(0, -2.0f), b2Vec2(0, 0), true);
+
+		}
+		
+		
 	}
 }
 

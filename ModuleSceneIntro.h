@@ -22,6 +22,7 @@ public:
 private:
 
 	void AddBouncers();
+	void AddSensors();
 
 public:
 	p2List<PhysBody*> pinball;
@@ -30,6 +31,9 @@ public:
 	//sensors
 	PhysBody* dying_sensor;
 	PhysBody* arrow_sensor_right1;
+	PhysBody* diglett_sensor1;
+	PhysBody* diglett_sensor2;
+	PhysBody* ball_catcher;
 	
 	bool sensed;
 

@@ -7,6 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
+#include "ModuleWindow.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -24,12 +25,17 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	//Loading music
+	App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
+
+	//Loading Sfx
+	bonus_fx = App->audio->LoadFx("pinball/audio/Sfx/bonus.wav");
+
 	App->renderer->camera.x = App->renderer->camera.y = 0;
-
+	
+	//Loading Textures
 	pinball_tex = App->textures->Load("pinball/images/Pinball.png");
-	//bouncer_tex = App->textures->Load("pinball/bouncer.png");
-	bonus_fx = App->audio->LoadFx("pinball/audio/bonus.wav");
-
+	
 	//Sensor Rectangle to detect when the player loses
 	dying_sensor = App->physics->CreateRectangleSensor(0 , SCREEN_HEIGHT +  50, SCREEN_WIDTH, 50);
 	
@@ -37,8 +43,9 @@ bool ModuleSceneIntro::Start()
 	App->physics->AddPinballParts();
 	AddBouncers();
 
-	//Creating sensors to animations
-	arrow_sensor_right1 = App->physics->CreateRectangleSensor(367, 480, 120, 45, 90.075);
+	//Calling function to create sensors
+	AddSensors();
+
 	return ret;
 }
 
@@ -53,6 +60,7 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	
 	/*if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;
@@ -133,5 +141,26 @@ void ModuleSceneIntro::AddBouncers()
 	bouncers.add(App->physics->CreateCircle(198, 257, 27, b2_staticBody, 1.5f, 20));
 	bouncers.add(App->physics->CreateCircle(274, 227, 27, b2_staticBody, 1.5f, 20));
 	bouncers.add(App->physics->CreateCircle(255, 312, 27, b2_staticBody, 1.5f, 20));
+}
+
+void ModuleSceneIntro::AddSensors()
+{
+	// Creating Animation Sensors
+
+	arrow_sensor_right1 = App->physics->CreateRectangleSensor(367, 480, 120, 45, 90.075);
+
+	// ---------------------------------------------------------------------------------
+
+
+	//Creating other Sensors
+
+	//Diglet Sensors
+	diglett_sensor1 = App->physics->CreateCircleSensor(85, 550, 25, 30);
+	diglett_sensor2 = App->physics->CreateCircleSensor(395, 550, 25, 30);
+	// ---------------------------------------------------------------------------------
+
+	//Ball catcher sensor
+	ball_catcher = App->physics->CreateCircleSensor(50, 57, 25, 70);
+	// --------------------------------------------------------------------------------
 }
 
