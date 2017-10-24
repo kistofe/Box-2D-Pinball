@@ -22,8 +22,8 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	ball_tex = App->textures->Load("pinball/ball.png");
-	flipper_tex = App->textures->Load("pinball/flipper.png");
+	ball_tex = App->textures->Load("pinball/images/ball.png");
+	flipper_tex = App->textures->Load("pinball/images/flipper.png");
 
 	// Calling player functions
 	CreateBall();
@@ -43,14 +43,29 @@ bool ModulePlayer::CleanUp()
 
 void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 {
-	int x, y;
 
 	App->audio->PlayFx(App->scene_intro->bonus_fx);
 
-	/*if (bodyB == App->scene_intro->dying_sensor)
+	if (bodyB == App->scene_intro->dying_sensor)
 	{
-		bodyA->body->SetTransform(b2Vec2( 500, 740 ), bodyA->GetRotation());
-	}*/
+		/*int x, y;
+		ball->body->SetType(b2_staticBody);
+		ball->body->SetTransform({ 500,750 }, 0);
+		ball->body->SetType(b2_dynamicBody);
+		*/
+		tries -= 1;
+	}
+	
+
+	if (bodyB->score != 0)//if BodyB is found in pinball list or bouncer list, enter
+	{
+		score += bodyB->score;
+	}
+
+	if (bodyB != App->scene_intro->arrow_sensor_right1)
+	{
+
+	}
 }
 
 void ModulePlayer::CreateFlippers()
@@ -97,11 +112,13 @@ void ModulePlayer::CreateFlippers()
 	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(-30), 0);		// Set the pivot point of the rectangle where the center of the circle is
 	revoluteJointDef.localAnchorB.Set(0, 0);						// Set the pivot point of the circle on its center
 
+	revoluteJointDef.enableLimit			= true;
 	revoluteJointDef.upperAngle				= 210 * DEGTORAD;			// Angle limits
 	revoluteJointDef.lowerAngle				= 150 * DEGTORAD;
 
 	revoluteJointDef.motorSpeed				= -1500.0f * DEGTORAD;		// Motor
 	revoluteJointDef.maxMotorTorque			= 1500;
+	revoluteJointDef.enableMotor			= false;
 
 	jointR = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
 
@@ -151,7 +168,7 @@ void ModulePlayer::CreateLauncher()
 void ModulePlayer::CreateBall()
 {
 	// Create Ball
-	ball = App->physics->CreateCircle(500, 740, 15, b2_dynamicBody, 0.35f);
+	ball = App->physics->CreateCircle(500, 750, 13, b2_dynamicBody, 0.35f);
 	ball->listener = this; //calls OnCollision function
 }
 
@@ -194,25 +211,32 @@ update_status ModulePlayer::Update()
 
 	// ----------------------------------------------------------
 
-	
+	// RESPAWN BALL	--------------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		CreateBall();
+	}
+
+
 	int x, y;
 
 	// FLIPPER BLITS -----------------------------------------
 	//Left Flipper
-	pivotL->GetPosition(x, y);
+	flipperL->GetPosition(x, y);
 	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, 0, flipperL->GetRotation(), flipperL->GetRotation());//Not working
 
 	//Right Flipper
 
 	// -------------------------------------------------------
 	
+
 	//BALL BLIT
 	ball->GetPosition(x, y);
 	App->renderer->Blit(ball_tex, x, y, NULL, 1.0f, ball->GetRotation());
 
 	// ----------------------------------------------------------
 	
-
+	LOG("ACTUAL SCORE: %d", score);
 	return UPDATE_CONTINUE;
 }
 
