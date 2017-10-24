@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Animation.h"
 #include "ModuleRender.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleInput.h"
@@ -11,7 +12,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = bouncer_tex = NULL;
+	pinball_tex = dugtrio_tex = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -35,7 +36,11 @@ bool ModuleSceneIntro::Start()
 	
 	//Loading Textures
 	pinball_tex = App->textures->Load("pinball/images/Pinball.png");
+	dugtrio_tex = App->textures->Load("pinball/images/dugtrio.png");
 	
+	//Adding Animations
+	AddAnimations();
+
 	//Sensor Rectangle to detect when the player loses
 	dying_sensor = App->physics->CreateRectangleSensor(0 , SCREEN_HEIGHT +  50, SCREEN_WIDTH, 50);
 	
@@ -53,6 +58,9 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
+
+	App->textures->Unload(dugtrio_tex);
+	App->textures->Unload(pinball_tex);
 
 	return true;
 }
@@ -113,6 +121,13 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
+	// Blit Animations -------------------------------------------
+	//Right dugtrio animation
+	App->renderer->Blit(dugtrio_tex, 411, 500, &(Dugtrio_right.GetCurrentFrame()));
+
+	//Left dugtrio animation
+	App->renderer->Blit(dugtrio_tex, 0, 500, &(Dugtrio_left.GetCurrentFrame()));
+
 	return UPDATE_CONTINUE;
 }
 
@@ -162,5 +177,24 @@ void ModuleSceneIntro::AddSensors()
 	//Ball catcher sensor
 	ball_catcher = App->physics->CreateCircleSensor(50, 57, 25, 70);
 	// --------------------------------------------------------------------------------
+}
+
+void ModuleSceneIntro::AddAnimations()
+{
+	//Right Dugtrio Animation
+	Dugtrio_right.PushBack({   0, 0, 69, 90 });
+	Dugtrio_right.PushBack({  75, 0, 69, 90 });
+	Dugtrio_right.PushBack({ 150, 0, 69, 90 });
+	Dugtrio_right.PushBack({ 225, 0, 69, 90 });
+	Dugtrio_right.loop = true;
+	Dugtrio_right.speed = 0.05f;
+
+	//Left Dugtrio Animation
+	Dugtrio_left.PushBack({   0, 120, 69, 90 });
+	Dugtrio_left.PushBack({  75, 120, 69, 90 });
+	Dugtrio_left.PushBack({ 150, 120, 69, 90 });
+	Dugtrio_left.PushBack({ 225, 120, 69, 90 });
+	Dugtrio_left.loop = true;
+	Dugtrio_left.speed = 0.05f;
 }
 

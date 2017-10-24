@@ -66,17 +66,19 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 	if (bodyB == App->scene_intro->ball_catcher)
 	{
 		uint timer = SDL_GetTicks();
-		uint total_time = timer + 3000;
+		uint total_time = timer + 1500;
 
-		ball->body->SetLinearVelocity(b2Vec2(0, 0));
-		ball->body->SetGravityScale(-GRAVITY_Y);
+	//	ball->body->SetLinearVelocity(b2Vec2(0, 0));
+	//	ball->body->SetAngularVelocity(0.0f);
+		ball->body->SetGravityScale(GRAVITY_Y);
 
 		if (timer >= total_time)
 		{
-			ball->body->ApplyLinearImpulse(b2Vec2(0, -2.0f), b2Vec2(0, 0), true);
-
+			ball->body->ApplyLinearImpulse(b2Vec2(0, 0.5f), b2Vec2(0, 0), true);
+			ball->body->SetGravityScale(-GRAVITY_Y);
+			
 		}
-		
+				
 		
 	}
 }
@@ -118,12 +120,13 @@ void ModulePlayer::CreateFlippers()
 	flipperR								= App->physics->CreateRectangle(318, 700, 65, 20);
 	pivotR									= App->physics->CreateCircle(318, 770, 10, b2_staticBody);
 	flipperR->body->SetGravityScale(30.0f);
-
+	
 	revoluteJointDef.bodyA					= flipperR->body;
 	revoluteJointDef.bodyB					= pivotR->body;
 
 	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(-30), 0);		// Set the pivot point of the rectangle where the center of the circle is
 	revoluteJointDef.localAnchorB.Set(0, 0);						// Set the pivot point of the circle on its center
+	revoluteJointDef.collideConnected		= false;
 
 	revoluteJointDef.enableLimit			= true;
 	revoluteJointDef.upperAngle				= 210 * DEGTORAD;			// Angle limits
@@ -235,11 +238,12 @@ update_status ModulePlayer::Update()
 
 	// FLIPPER BLITS -----------------------------------------
 	//Left Flipper
-	flipperL->GetPosition(x, y);
-	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, 0, flipperL->GetRotation(), flipperL->GetRotation());//Not working
+	pivotL->GetPosition(x, y);
+	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, flipperL->GetRotation(), SDL_FLIP_VERTICAL, 2147483647);//Not working
 
 	//Right Flipper
-
+	flipperR->GetPosition(x, y);
+	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, flipperR->GetRotation(), SDL_FLIP_HORIZONTAL);//Not working
 	// -------------------------------------------------------
 	
 
@@ -250,7 +254,10 @@ update_status ModulePlayer::Update()
 	// ----------------------------------------------------------
 
 	// Set score in the title
-
+	if (tries <= 0)
+	{
+		tries = 0;
+	}
 	tmp->create("[POKEMON PINBALL] | SCORE: %d | BALLS LEFT: %d", score, tries);
 	App->window->SetTitle(tmp->GetString());
 
