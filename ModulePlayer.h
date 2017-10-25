@@ -53,6 +53,7 @@ private:
 	b2PrismaticJoint* jointLauncher;
 
 	PhysBody* ball;
+	bool must_destroy_ball = false;
 
 	p2SString* tmp = new p2SString("[POKEMON PINBALL] | SCORE: %d", score);
 

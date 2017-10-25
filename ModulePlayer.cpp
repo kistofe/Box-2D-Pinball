@@ -48,11 +48,7 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 	
 	if (bodyB == App->scene_intro->dying_sensor)
 	{
-		/*int x, y;
-		ball->body->SetType(b2_staticBody);
-		ball->body->SetTransform({ 500,750 }, 0);
-		ball->body->SetType(b2_dynamicBody);
-		*/
+		must_destroy_ball = true;
 		tries -= 1;
 	}
 	
@@ -263,6 +259,15 @@ update_status ModulePlayer::Update()
 
 	// ----------------------------------------------------------
 	
+	//Destroy the ball when losing
+	if (must_destroy_ball)
+	{
+		App->physics->world->DestroyBody(ball->body);
+		CreateBall();
+		must_destroy_ball = false;
+	}
+
+
 	return UPDATE_CONTINUE;
 }
 
