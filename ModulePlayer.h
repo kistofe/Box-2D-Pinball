@@ -38,8 +38,7 @@ public:
 	uint score = 0;
 	uint tries = 3;
 
-private:
-
+	//Flippers
 	PhysBody* flipperL;
 	PhysBody* pivotL;
 	b2RevoluteJoint* jointL;
@@ -47,6 +46,10 @@ private:
 	PhysBody* flipperR;
 	PhysBody* pivotR;
 	b2RevoluteJoint* jointR;
+
+private:
+
+	
 
 	PhysBody* launcher;
 	PhysBody* launcher_pivot;

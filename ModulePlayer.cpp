@@ -39,6 +39,9 @@ bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
 
+	App->textures->Unload(ball_tex);
+	App->textures->Unload(flipper_tex);
+
 	return true;
 }
 
@@ -61,21 +64,7 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 
 	if (bodyB == App->scene_intro->ball_catcher)
 	{
-		uint timer = SDL_GetTicks();
-		uint total_time = timer + 1500;
-
-	//	ball->body->SetLinearVelocity(b2Vec2(0, 0));
-	//	ball->body->SetAngularVelocity(0.0f);
-		ball->body->SetGravityScale(GRAVITY_Y);
-
-		if (timer >= total_time)
-		{
-			ball->body->ApplyLinearImpulse(b2Vec2(0, 0.5f), b2Vec2(0, 0), true);
-			ball->body->SetGravityScale(-GRAVITY_Y);
-			
-		}
 				
-		
 	}
 }
 
@@ -206,6 +195,7 @@ update_status ModulePlayer::Update()
 	{
 		jointR->EnableMotor(false);
 	}
+
 	// -------------------------------------------------------
 	
 
@@ -222,13 +212,6 @@ update_status ModulePlayer::Update()
 	}
 
 	// ----------------------------------------------------------
-
-	// RESPAWN BALL	--------------------------------------------
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	{
-		CreateBall();
-	}
-
 
 	int x, y;
 
@@ -254,18 +237,32 @@ update_status ModulePlayer::Update()
 	{
 		tries = 0;
 	}
-	tmp->create("[POKEMON PINBALL] | SCORE: %d | BALLS LEFT: %d", score, tries);
+	if (App->player->tries > 0)
+		tmp->create("[POKEMON PINBALL] | SCORE: %d | BALLS LEFT: %d", score, tries);
+	else
+		tmp->create("[POKEMON PINBALL] | YOU LOSE! :( | TOTAL SCORE: %d | ---- Press F5 to Re-start game ----", score);
+
 	App->window->SetTitle(tmp->GetString());
 
 	// ----------------------------------------------------------
 	
 	//Destroy the ball when losing
-	if (must_destroy_ball)
+	if (must_destroy_ball && tries > 0)
 	{
 		App->physics->world->DestroyBody(ball->body);
 		CreateBall();
 		must_destroy_ball = false;
 	}
+
+	// ----------------------------------------------------------
+
+	//Reseting Score when losing
+	if (tries <= 0)
+	{
+		score = 0;
+	}
+
+	// ---------------------------------------------------------
 
 
 	return UPDATE_CONTINUE;

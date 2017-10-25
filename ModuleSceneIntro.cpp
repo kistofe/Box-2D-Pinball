@@ -69,23 +69,6 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	
-	/*if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		ray_on = !ray_on;
-		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();
-	}
-	*/
-
-	// Prepare for raycast ------------------------------------------------------
-	
-	iPoint mouse;
-	mouse.x = App->input->GetMouseX();
-	mouse.y = App->input->GetMouseY();
-	int ray_hit = ray.DistanceTo(mouse);
-
-	fVector normal(0.0f, 0.0f);
-
 	// All draw functions ------------------------------------------------------
 	p2List_item<PhysBody*>* c = pinball.getFirst();
 	
@@ -108,19 +91,7 @@ update_status ModuleSceneIntro::Update()
 		c = c->next;
 	}*/
 
-	// ray -----------------
-	if(ray_on == true)
-	{
-		fVector destination(mouse.x-ray.x, mouse.y-ray.y);
-		destination.Normalize();
-		destination *= ray_hit;
-
-		App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
-
-		if(normal.x != 0.0f)
-			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-	}
-
+	
 	// Blit Animations -------------------------------------------
 	//Right dugtrio animation
 	App->renderer->Blit(dugtrio_tex, 411, 500, &(Dugtrio_right.GetCurrentFrame()));
@@ -128,27 +99,18 @@ update_status ModuleSceneIntro::Update()
 	//Left dugtrio animation
 	App->renderer->Blit(dugtrio_tex, 0, 500, &(Dugtrio_left.GetCurrentFrame()));
 
-	return UPDATE_CONTINUE;
-}
+	// ----------------------------------------------------------
 
-void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
-{
-	int x, y;
-
-	App->audio->PlayFx(bonus_fx);
-
-	/*
-	if(bodyA)
+	// RESPAWN BALL	--------------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
-		bodyA->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
+		App->player->score = 0;
+		App->player->tries = 3;
 	}
 
-	if(bodyB)
-	{
-		bodyB->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
-	}*/
+	// -------------------------------------------------------
+
+	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::AddBouncers()
