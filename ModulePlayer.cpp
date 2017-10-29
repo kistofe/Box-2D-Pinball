@@ -110,8 +110,8 @@ void ModulePlayer::CreateFlippers()
 	// Right flipper		------------------------------------------------------------
 
 
-	flipperR								= App->physics->CreateRectangle(318, 700, 65, 20);
-	pivotR									= App->physics->CreateCircle(318, 770, 10, b2_staticBody);
+	flipperR								= App->physics->CreateRectangle(312, 700, 65, 20);
+	pivotR									= App->physics->CreateCircle(312, 770, 10, b2_staticBody);
 	flipperR->body->SetGravityScale(30.0f);
 	
 	revoluteJointDef.bodyA					= flipperR->body;
