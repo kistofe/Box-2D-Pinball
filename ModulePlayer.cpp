@@ -48,15 +48,23 @@ bool ModulePlayer::CleanUp()
 void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 {
 
-	
 	if (bodyB == App->scene_intro->dying_sensor)
 	{
 		must_destroy_ball = true;
 		tries -= 1;
+
+		if (tries > 0)
+			App->audio->PlayFx(App->scene_intro->lose_ball_fx);
+		else
+		{
+			App->audio->PlayFx(App->scene_intro->lose_fx);
+			App->audio->PlayMusic("pinball/audio/Themes/Game Over.ogg");
+		}
+			
+			
 	}
 	
-	
-	if (bodyB->score != 0)//if BodyB is found in pinball list or bouncer list, enter
+	if (bodyB->score != 0)
 	{
 		App->audio->PlayFx(App->scene_intro->bonus_fx);
 		score += bodyB->score;

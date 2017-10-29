@@ -28,9 +28,11 @@ bool ModuleSceneIntro::Start()
 
 	//Loading music
 	App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
-
+	
 	//Loading Sfx
 	bonus_fx = App->audio->LoadFx("pinball/audio/Sfx/bonus.wav");
+	lose_ball_fx = App->audio->LoadFx("pinball/audio/Sfx/Lose ball.wav");
+	lose_fx = App->audio->LoadFx("pinball/audio/Sfx/Lose.wav");
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
@@ -121,11 +123,13 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(panel_tex, 171, 501, &(panel.GetCurrentFrame()));
 	// ----------------------------------------------------------
 
-	// RESPAWN BALL	--------------------------------------------
+	// RE-START GAME--------------------------------------------
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
 		App->player->score = 0;
 		App->player->tries = 3;
+		App->scene_intro->panel.Reset();
+		App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
 	}
 
 	// -------------------------------------------------------

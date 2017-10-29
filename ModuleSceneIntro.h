@@ -56,6 +56,11 @@ public:
 	SDL_Texture* panel_tex;
 
 	uint bonus_fx;
+	uint lose_ball_fx;
+	uint lose_fx;
+
+
+
 	p2Point<int> ray;
 	bool ray_on;
 
