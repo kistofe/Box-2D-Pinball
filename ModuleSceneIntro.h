@@ -39,6 +39,10 @@ public:
 	//Animations
 	Animation Dugtrio_left;
 	Animation Dugtrio_right;
+	Animation Pikachu;
+	Animation Starmie;
+	Animation panel_border;
+	Animation panel;
 	Animation* current_animation = nullptr;
 
 	bool sensed;
@@ -46,6 +50,10 @@ public:
 	SDL_Texture* pinball_tex;
 	SDL_Texture* bouncer_tex;
 	SDL_Texture* dugtrio_tex;
+	SDL_Texture* pikachu_tex;
+	SDL_Texture* starmie_tex;
+	SDL_Texture* panel_bor_tex;
+	SDL_Texture* panel_tex;
 
 	uint bonus_fx;
 	p2Point<int> ray;

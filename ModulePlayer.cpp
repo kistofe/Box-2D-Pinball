@@ -256,15 +256,7 @@ update_status ModulePlayer::Update()
 
 	// ----------------------------------------------------------
 
-	//Reseting Score when losing
-	if (tries <= 0)
-	{
-		score = 0;
-	}
-
-	// ---------------------------------------------------------
-
-
+	
 	return UPDATE_CONTINUE;
 }
 

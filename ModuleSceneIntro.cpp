@@ -12,7 +12,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = dugtrio_tex = NULL;
+	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -37,6 +37,10 @@ bool ModuleSceneIntro::Start()
 	//Loading Textures
 	pinball_tex = App->textures->Load("pinball/images/Pinball.png");
 	dugtrio_tex = App->textures->Load("pinball/images/dugtrio.png");
+	pikachu_tex = App->textures->Load("pinball/images/pikachu.png");
+	starmie_tex = App->textures->Load("pinball/images/starmie.png");
+	panel_bor_tex = App->textures->Load("pinball/images/border.png");
+	panel_tex = App->textures->Load("pinball/images/Panel.png");
 	
 	//Adding Animations
 	AddAnimations();
@@ -61,6 +65,10 @@ bool ModuleSceneIntro::CleanUp()
 
 	App->textures->Unload(dugtrio_tex);
 	App->textures->Unload(pinball_tex);
+	App->textures->Unload(pikachu_tex);
+	App->textures->Unload(starmie_tex);
+	App->textures->Unload(panel_bor_tex);
+	App->textures->Unload(panel_tex);
 
 	return true;
 }
@@ -99,6 +107,18 @@ update_status ModuleSceneIntro::Update()
 	//Left dugtrio animation
 	App->renderer->Blit(dugtrio_tex, 0, 500, &(Dugtrio_left.GetCurrentFrame()));
 
+	//Pikachu animation
+	App->renderer->Blit(pikachu_tex, 20, 780, &(Pikachu.GetCurrentFrame()));
+	App->renderer->Blit(pikachu_tex, 420, 780, &(Pikachu.GetCurrentFrame()));
+
+	//Starmie animation
+	App->renderer->Blit(starmie_tex, 0, 450, &(Starmie.GetCurrentFrame()));
+
+	//Panel Border Animation
+	App->renderer->Blit(panel_bor_tex, 168, 498, &(panel_border.GetCurrentFrame()));
+
+	//Panel Animation
+	App->renderer->Blit(panel_tex, 171, 501, &(panel.GetCurrentFrame()));
 	// ----------------------------------------------------------
 
 	// RESPAWN BALL	--------------------------------------------
@@ -158,5 +178,54 @@ void ModuleSceneIntro::AddAnimations()
 	Dugtrio_left.PushBack({ 225, 120, 69, 90 });
 	Dugtrio_left.loop = true;
 	Dugtrio_left.speed = 0.05f;
+
+	//Pikachu Animation
+	Pikachu.PushBack({   0, 0, 48, 48 });
+	Pikachu.PushBack({  54, 0, 42, 48 });
+	Pikachu.PushBack({ 102, 6, 45, 42 });
+	Pikachu.loop = true;
+	Pikachu.speed = 0.05f;
+
+	//Starmie Animation
+	Starmie.PushBack({ 0, 0, 54, 48 });
+	Starmie.PushBack({ 60, 0, 54, 48 });
+	Starmie.loop = true;
+	Starmie.speed = 0.01f;
+
+	//Panel Border Animation
+	panel_border.PushBack({  0,  0, 144, 96 });
+	panel_border.PushBack({ 154, 0, 144, 96 });
+	panel_border.PushBack({ 304, 0, 144, 96 });
+	panel_border.loop = true;
+	panel_border.speed = 0.015f;
+
+	//Panel Animation
+	panel.PushBack({   0,   0, 138, 90 }); 
+	panel.PushBack({   0, 100, 138, 90 });
+	panel.PushBack({   0, 200, 138, 90 });
+	panel.PushBack({   0, 300, 138, 90 });
+	panel.PushBack({   0, 400, 138, 90 });
+	panel.PushBack({   0, 500, 138, 90 });
+	panel.PushBack({ 148,   0, 138, 90 });
+	panel.PushBack({ 148, 100, 138, 90 });
+	panel.PushBack({ 148, 200, 138, 90 });
+	panel.PushBack({ 148, 300, 138, 90 });
+	panel.PushBack({ 148, 400, 138, 90 });
+	panel.PushBack({ 148, 500, 138, 90 });
+	panel.PushBack({ 296,   0, 138, 90 });
+	panel.PushBack({ 296, 100, 138, 90 });
+	panel.PushBack({ 296, 200, 138, 90 });
+	panel.PushBack({ 296, 300, 138, 90 });
+	panel.PushBack({ 296, 400, 138, 90 });
+	panel.PushBack({ 296, 500, 138, 90 });
+	panel.PushBack({ 444,   0, 138, 90 });
+	panel.PushBack({ 444, 100, 138, 90 });
+	panel.PushBack({ 444, 200, 138, 90 });
+	panel.PushBack({ 444, 300, 138, 90 });
+	panel.PushBack({ 444, 400, 138, 90 });
+	panel.PushBack({ 444, 500, 138, 90 });
+	panel.loop = true;
+	panel.speed = 0.0025f; 
+
 }
 
