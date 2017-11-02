@@ -45,6 +45,7 @@ public:
 	Animation Dugtrio_right;
 	Animation Pikachu;
 	Animation Starmie;
+	Animation Starmie2;
 	Animation panel_border;
 	Animation panel;
 
@@ -56,6 +57,7 @@ public:
 	SDL_Texture* dugtrio_tex;
 	SDL_Texture* pikachu_tex;
 	SDL_Texture* starmie_tex;
+	SDL_Texture* starmie2_tex;
 	SDL_Texture* panel_bor_tex;
 	SDL_Texture* panel_tex;
 	SDL_Texture* arrow;
@@ -65,8 +67,7 @@ public:
 	uint lose_ball_fx;
 	uint lose_fx;
 
-
-
+	
 	p2Point<int> ray;
 	bool ray_on;
 

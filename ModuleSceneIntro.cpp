@@ -14,7 +14,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow = NULL;
+	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow = starmie2_tex = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -43,6 +43,7 @@ bool ModuleSceneIntro::Start()
 	dugtrio_tex		= App->textures->Load("pinball/images/dugtrio.png");
 	pikachu_tex		= App->textures->Load("pinball/images/pikachu.png");
 	starmie_tex		= App->textures->Load("pinball/images/starmie.png");
+	starmie2_tex	= App->textures->Load("pinball/images/starmie2.png");
 	panel_bor_tex	= App->textures->Load("pinball/images/border.png");
 	panel_tex		= App->textures->Load("pinball/images/Panel.png");
 	arrow			= App->textures->Load("pinball/images/diagonal_arrow.png");
@@ -71,6 +72,7 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(dugtrio_tex);
 	App->textures->Unload(pikachu_tex);
 	App->textures->Unload(starmie_tex);
+	App->textures->Unload(starmie2_tex);
 	App->textures->Unload(panel_bor_tex);
 	App->textures->Unload(panel_tex);
 	App->textures->Unload(arrow);
@@ -126,6 +128,9 @@ update_status ModuleSceneIntro::Update()
 
 	//Panel Animation
 	App->renderer->Blit(panel_tex, 171, 501, &(panel.GetCurrentFrame()));
+
+	//Second Starmie animation
+	App->renderer->Blit(starmie2_tex, 133, 315, &(Starmie2.GetCurrentFrame()));
 
 	// --------------------------------------------------------------
 
@@ -245,7 +250,11 @@ void ModuleSceneIntro::AddSceneAnimations()
 	panel.loop = true;
 	panel.speed = 0.0025f; 
 
-	//Launcher animation
+	//Second Starmie animation
+	Starmie2.PushBack({   0, 0, 63, 69 });
+	Starmie2.PushBack({  69, 0, 63, 69 });
+	Starmie2.loop = true;
+	Starmie2.speed = 0.05f;
 
 }
 

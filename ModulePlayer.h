@@ -30,9 +30,7 @@ private:
 
 	//Function to create ball
 	void CreateBall();
-
-	void LauncherAnimation();
-
+	
 public:
 
 	//Textures

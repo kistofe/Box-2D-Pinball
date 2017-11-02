@@ -29,7 +29,7 @@ bool ModulePlayer::Start()
 	launcher_tex	= App->textures->Load("pinball/images/launcher.png");
 
 	flipper_fx = App->audio->LoadFx("pinball/audio/Sfx/Flipper.wav");
-
+	
 	// Calling player functions
 	CreateBall();
 	CreateFlippers();
@@ -79,15 +79,6 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 		light_r_arrow = true;
 	}
 
-/*1	while (bodyB == App->scene_intro->triangle_left)
-		triangle_left_is_hit = true;
-
-	triangle_left_is_hit = false;
-
-	while (bodyB == App->scene_intro->triangle_right)
-		triangle_right_is_hit = true;
-
-	triangle_right_is_hit = false;*/
 }
 
 void ModulePlayer::CreateFlippers()
@@ -155,8 +146,6 @@ void ModulePlayer::CreateFlippers()
 
 void ModulePlayer::CreateLauncher()
 {
-	int x, y;
-	//Create Launcher 2D Body
 	
 	b2RevoluteJointDef revoluteJointDef;
 
@@ -190,7 +179,7 @@ void ModulePlayer::CreateLauncher()
 
 	// ---------------------------------------------------------------------------------
 
-	//Set Launcher's Texture and Animations -------------------------------------------
+	//Set Launcher's Animations -------------------------------------------
 
 	//Animations
 	launcher_anim_idle.PushBack({ 0, 0, 42, 110 });
@@ -202,6 +191,8 @@ void ModulePlayer::CreateLauncher()
 	launcher_anim_launching.speed = 1.0f;
 
 	current_animation = &launcher_anim_idle;
+	
+	// --------------------------------------------------------------------
 
 }
 
@@ -210,10 +201,6 @@ void ModulePlayer::CreateBall()
 	// Create Ball
 	ball = App->physics->CreateCircle(500, 750, 13, b2_dynamicBody, 0.25f);
 	ball->listener = this; 
-}
-
-void ModulePlayer::LauncherAnimation()
-{
 }
 
 // Update: draw background
