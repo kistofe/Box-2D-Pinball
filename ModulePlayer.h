@@ -66,6 +66,8 @@ private:
 	PhysBody* launcher_pivot;
 	b2PrismaticJoint* jointLauncher;
 
+	uint flipper_fx;
+
 	PhysBody* ball;
 	bool must_destroy_ball = false;
 

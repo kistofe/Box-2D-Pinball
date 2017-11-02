@@ -28,6 +28,8 @@ bool ModulePlayer::Start()
 	flipper_tex		= App->textures->Load("pinball/images/flipper.png");
 	launcher_tex	= App->textures->Load("pinball/images/launcher.png");
 
+	flipper_fx = App->audio->LoadFx("pinball/audio/Sfx/Flipper.wav");
+
 	// Calling player functions
 	CreateBall();
 	CreateFlippers();
@@ -223,6 +225,7 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
 		jointL->EnableMotor(true);
+		App->audio->PlayFx(flipper_fx);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 	{
@@ -232,6 +235,7 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
 		jointR->EnableMotor(true);
+		App->audio->PlayFx(flipper_fx);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 	{
