@@ -17,7 +17,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 {
 	world = NULL;
 	mouse_joint = NULL;
-	debug = true;
+	debug = false;
 }
 
 // Destructor
@@ -471,7 +471,7 @@ void ModulePhysics::AddPinballParts()
 	App->scene_intro->pinball.add(CreateChain(0, 0, secondary_shape2, 8, 2.0f, 20));
 
 	// Circle between flippers
-	App->scene_intro->pinball.add(CreateCircle(240, 835, 5, b2_staticBody, 1.5f));
+	App->scene_intro->pinball.add(CreateCircle(240, 835, 5, b2_staticBody));
 	// -----------------------------------------------------------------
 
 
@@ -559,44 +559,9 @@ update_status ModulePhysics::PostUpdate()
 				}
 				break;
 			}
-
-			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
-			{
-				if (f->TestPoint(mouse_pos) && !body_found)
-				{
-					body_found = f->GetBody();
-					break;
-				}
-			}
-			
-			// test if the current body contains mouse position
 		}
 	}
 
-	// If a body was selected we will attach a mouse joint to it
-	// so we can pull it around
-	if (body_found != nullptr)
-	{
-		b2MouseJointDef def;
-		def.bodyA = ground;
-		def.bodyB = body_found;
-		def.target = mouse_pos;
-		def.dampingRatio = 0.5f;
-		def.frequencyHz = 2.0f;
-		def.maxForce = 100.0f * body_found->GetMass();
-		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
-	}
-
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && mouse_joint)
-	{
-		mouse_joint->SetTarget(mouse_pos);
-	}
-
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && mouse_joint)
-	{
-		world->DestroyJoint(mouse_joint);
-		mouse_joint = nullptr;
-	}
 
 
 	return UPDATE_CONTINUE;

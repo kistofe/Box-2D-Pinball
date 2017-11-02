@@ -65,7 +65,7 @@ public:
 	SDL_Texture* panel_bor_tex;
 	SDL_Texture* panel_tex;
 	SDL_Texture* arrow_tex;
-	SDL_Texture* lighted_bouncer_tex;
+	SDL_Texture* lit_bouncer_tex;
 	SDL_Texture* blue_light_tex;
 	SDL_Texture* red_light_tex;
 	SDL_Texture* light_off_tex;
@@ -77,6 +77,8 @@ public:
 	uint lose_fx;
 
 	bool round_lights_on[5] = { false, false, false, false, false };
+	bool is_bouncer_hit[3] = { false, false, false };
+	int bouncer_timer[3] = { 0, 0, 0 };
 
 	
 	p2Point<int> ray;

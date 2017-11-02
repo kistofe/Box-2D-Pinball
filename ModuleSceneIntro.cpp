@@ -14,7 +14,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = starmie2_tex = lighted_bouncer_tex = blue_light_tex = NULL;
+	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = starmie2_tex = lit_bouncer_tex = blue_light_tex = NULL;
 
 	ray_on = false;
 	sensed = false;
@@ -50,7 +50,7 @@ bool ModuleSceneIntro::Start()
 	blue_light_tex		= App->textures->Load("pinball/images/blue_light.png");
 	red_light_tex		= App->textures->Load("pinball/images/red_light.png");
 	light_off_tex		= App->textures->Load("pinball/images/light_off.png");
-	lighted_bouncer_tex = App->textures->Load("pinball/images/lighted bouncer.png");
+	lit_bouncer_tex		= App->textures->Load("pinball/images/lit_bouncer.png");
 
 	//Adding Animations
 	AddSceneAnimations();
@@ -78,7 +78,7 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(starmie2_tex);
 	App->textures->Unload(panel_bor_tex);
 	App->textures->Unload(panel_tex);
-	App->textures->Unload(lighted_bouncer_tex);
+	App->textures->Unload(lit_bouncer_tex);
 
 
 	return true;
@@ -87,6 +87,20 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	// Update the bouncer timer
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (is_bouncer_hit[i])
+			bouncer_timer[i]++;
+
+		if (bouncer_timer[i] > 15)
+		{
+			bouncer_timer[i] = 0;
+			is_bouncer_hit[i] = false;
+		}
+	}
+
 	
 	// All draw functions ------------------------------------------------------
 	
@@ -96,14 +110,14 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(pinball_tex, 0, 0, NULL);
 
 	//Lighted Bouncer Textures
-	if (App->player->has_hitted_bouncer[0] == true)
-		App->renderer->Blit(lighted_bouncer_tex, 190, 250, NULL);
+	if (is_bouncer_hit[0] == true)
+		App->renderer->Blit(lit_bouncer_tex, 174, 234, NULL);
 	
-	if (App->player->has_hitted_bouncer[1] == true)
-		App->renderer->Blit(lighted_bouncer_tex, 270, 220, NULL);
+	if (is_bouncer_hit[1] == true)
+		App->renderer->Blit(lit_bouncer_tex, 249, 204, NULL);
 	
-	if (App->player->has_hitted_bouncer[2] == true)
-		App->renderer->Blit(lighted_bouncer_tex, 250, 308, NULL);
+	if (is_bouncer_hit[2] == true)
+		App->renderer->Blit(lit_bouncer_tex, 231, 288, NULL);
 	
 	//----------------------------------------------------------
 
@@ -157,15 +171,17 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(red_light_tex, 153, 339, NULL);
 	else if (!round_lights_on[4])
 		App->renderer->Blit(light_off_tex, 153, 339, NULL);
+
+	// Blit bouncers 
 	
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::AddBouncers()
 {
-	bouncers[0] = App->physics->CreateCircle(198, 257, 27, b2_staticBody, 1.5f, 20);
-	bouncers[1] = App->physics->CreateCircle(274, 227, 27, b2_staticBody, 1.5f, 20);
-	bouncers[2] = App->physics->CreateCircle(255, 312, 27, b2_staticBody, 1.5f, 20);
+	bouncers[0] = App->physics->CreateCircle(198, 257, 23, b2_staticBody, 1.0f, 20);
+	bouncers[1] = App->physics->CreateCircle(274, 227, 23, b2_staticBody, 1.0f, 20);
+	bouncers[2] = App->physics->CreateCircle(255, 312, 23, b2_staticBody, 1.0f, 20);
 }
 
 void ModuleSceneIntro::AddSensors()

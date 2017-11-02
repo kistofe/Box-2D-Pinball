@@ -55,8 +55,6 @@ public:
 	Animation launcher_anim_idle;
 	Animation launcher_anim_launching;
 	Animation* current_animation = nullptr;
-	
-	bool has_hitted_bouncer[3] = { false, false, false };
 
 private:
 	

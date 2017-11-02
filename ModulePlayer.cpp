@@ -78,9 +78,10 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 	{
 		if (bodyB == App->scene_intro->voltorb_sensor[i])
 		{
-			has_hitted_bouncer[i] = true;
+			App->scene_intro->is_bouncer_hit[i] = true;
 		}
 	}
+
 	
 
 	for (int i = 0; i < 5; i++)
