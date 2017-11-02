@@ -116,20 +116,20 @@ void ModulePlayer::CreateFlippers()
 	// Right flipper		------------------------------------------------------------
 
 
-	flipperR								= App->physics->CreateRectangle(318, 767, 70, 20, -212 * DEGTORAD);
+	flipperR								= App->physics->CreateRectangle(318, 767, 70, 20, -32 * DEGTORAD);
 	pivotR									= App->physics->CreateCircle(318, 767, 10, b2_staticBody);
 	flipperR->body->SetGravityScale(30.0f);
 	
 	revoluteJointDef.bodyA					= flipperR->body;
 	revoluteJointDef.bodyB					= pivotR->body;
 
-	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(-30), 0);		// Set the pivot point of the rectangle where the center of the circle is
+	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), 0);		// Set the pivot point of the rectangle where the center of the circle is
 	revoluteJointDef.localAnchorB.Set(0, 0);						// Set the pivot point of the circle on its center
 	revoluteJointDef.collideConnected		= false;
 	revoluteJointDef.referenceAngle = 0;
 
-	revoluteJointDef.upperAngle				= 212 * DEGTORAD;			// Angle limits
-	revoluteJointDef.lowerAngle				= 148 * DEGTORAD;
+	revoluteJointDef.upperAngle				= 32 * DEGTORAD;			// Angle limits
+	revoluteJointDef.lowerAngle				= -32 * DEGTORAD;
 	revoluteJointDef.enableLimit = true;
 
 	revoluteJointDef.motorSpeed				= -1500.0f * DEGTORAD;		// Motor
@@ -151,7 +151,7 @@ void ModulePlayer::CreateLauncher()
 
 	// Ball launcher		------------------------------------------------------------
 
-	launcher = App->physics->CreateRectangle(500, 780, 30, 80);
+	launcher = App->physics->CreateRectangle(500, 830, 30, 80);
 	launcher_pivot = App->physics->CreateRectangle(500, 830, 30, 20, 0, b2_staticBody);
 
 	b2PrismaticJointDef prismaticJointDef;
@@ -257,7 +257,7 @@ update_status ModulePlayer::Update()
 	
 	//Right Flipper
 	flipperR->GetPosition(x, y);
-	App->renderer->Blit(flipper_tex, x - 7, y - 5, NULL, 1.0f, flipperR->GetRotation(), SDL_FLIP_HORIZONTAL);
+	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, flipperR->GetRotation() + 180);
 	// -------------------------------------------------------
 
 	// Set Ball texture
