@@ -70,6 +70,7 @@ public:
 	SDL_Texture* red_light_tex;
 	SDL_Texture* light_off_tex;
 	SDL_Texture* lit_triangle_tex;
+	SDL_Texture* again_tex;
 
 
 	//Sfx

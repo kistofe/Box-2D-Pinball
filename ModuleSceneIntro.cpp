@@ -14,7 +14,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = starmie2_tex = lit_bouncer_tex = blue_light_tex = lit_triangle_tex = NULL;
+	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = starmie2_tex = lit_bouncer_tex = blue_light_tex = lit_triangle_tex = again_tex = NULL;
 
 	ray_on = false;
 	sensed = false;
@@ -40,18 +40,19 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
 	//Loading Textures
-	pinball_tex			= App->textures->Load("pinball/images/Pinball.png");
-	dugtrio_tex			= App->textures->Load("pinball/images/dugtrio.png");
-	pikachu_tex			= App->textures->Load("pinball/images/pikachu.png");
-	starmie_tex			= App->textures->Load("pinball/images/starmie.png");
-	starmie2_tex		= App->textures->Load("pinball/images/starmie2.png");
-	panel_bor_tex		= App->textures->Load("pinball/images/border.png");
-	panel_tex			= App->textures->Load("pinball/images/Panel.png");
-	blue_light_tex		= App->textures->Load("pinball/images/blue_light.png");
-	red_light_tex		= App->textures->Load("pinball/images/red_light.png");
-	light_off_tex		= App->textures->Load("pinball/images/light_off.png");
-	lit_bouncer_tex		= App->textures->Load("pinball/images/lit_bouncer.png");
-	lit_triangle_tex	= App->textures->Load("pinball/images/lit_triangle.png");
+	pinball_tex				= App->textures->Load("pinball/images/Pinball.png");
+	dugtrio_tex				= App->textures->Load("pinball/images/dugtrio.png");
+	pikachu_tex				= App->textures->Load("pinball/images/pikachu.png");
+	starmie_tex				= App->textures->Load("pinball/images/starmie.png");
+	starmie2_tex			= App->textures->Load("pinball/images/starmie2.png");
+	panel_bor_tex			= App->textures->Load("pinball/images/border.png");
+	panel_tex				= App->textures->Load("pinball/images/Panel.png");
+	blue_light_tex			= App->textures->Load("pinball/images/blue_light.png");
+	red_light_tex			= App->textures->Load("pinball/images/red_light.png");
+	light_off_tex			= App->textures->Load("pinball/images/light_off.png");
+	lit_bouncer_tex			= App->textures->Load("pinball/images/lit_bouncer.png");
+	lit_triangle_tex		= App->textures->Load("pinball/images/lit_triangle.png");
+	again_tex				= App->textures->Load("pinball/images/again_tex.png");
 
 	//Adding Animations
 	AddSceneAnimations();
@@ -81,8 +82,8 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(panel_tex);
 	App->textures->Unload(lit_bouncer_tex);
 	App->textures->Unload(lit_triangle_tex);
-
-
+	App->textures->Unload(again_tex);
+	
 	return true;
 }
 
@@ -140,6 +141,12 @@ update_status ModuleSceneIntro::Update()
 	if (is_triangle_hit[1] == true)//Right triangle
 		App->renderer->Blit(lit_triangle_tex, 325, 619, NULL);
 
+	//Again texture
+	if (App->player->tries <= 0)
+		App->renderer->Blit(again_tex, 192, 741, NULL);
+
+	
+		
 
 	//----------------------------------------------------------
 
