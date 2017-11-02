@@ -39,7 +39,7 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
 	//Loading Textures
-	pinball_tex		= App->textures->Load("pinball/images/pinball2.png");
+	pinball_tex		= App->textures->Load("pinball/images/Pinball.png");
 	dugtrio_tex		= App->textures->Load("pinball/images/dugtrio.png");
 	pikachu_tex		= App->textures->Load("pinball/images/pikachu.png");
 	starmie_tex		= App->textures->Load("pinball/images/starmie.png");
