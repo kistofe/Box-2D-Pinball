@@ -203,11 +203,11 @@ void ModuleSceneIntro::AddSensors()
 
 	//Blue lights
 
-	bluelights[0] = App->physics->CreateCircleSensor(30, 618, PIXEL_TO_METERS(21));
-	bluelights[1] = App->physics->CreateCircleSensor(78, 618, PIXEL_TO_METERS(21));
-	bluelights[2] = App->physics->CreateCircleSensor(381, 618, PIXEL_TO_METERS(21));
-	bluelights[3] = App->physics->CreateCircleSensor(429, 618, PIXEL_TO_METERS(21));
-	bluelights[4] = App->physics->CreateCircleSensor(105, 332, PIXEL_TO_METERS(21));
+	bluelights[0] = App->physics->CreateCircleSensor(30, 618, PIXEL_TO_METERS(21), 50);
+	bluelights[1] = App->physics->CreateCircleSensor(78, 618, PIXEL_TO_METERS(21), 50);
+	bluelights[2] = App->physics->CreateCircleSensor(381, 618, PIXEL_TO_METERS(21), 50);
+	bluelights[3] = App->physics->CreateCircleSensor(429, 618, PIXEL_TO_METERS(21), 50);
+	bluelights[4] = App->physics->CreateCircleSensor(105, 332, PIXEL_TO_METERS(21), 30);
 
 	// ---------------------------------------------------------------------------------
 
