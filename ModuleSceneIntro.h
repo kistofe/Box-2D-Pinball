@@ -48,6 +48,9 @@ public:
 	Animation Starmie2;
 	Animation panel_border;
 	Animation panel;
+	Animation red_light_off;
+	Animation red_light_on;
+	Animation* current_animation = nullptr;
 
 	bool sensed;
 
@@ -61,6 +64,7 @@ public:
 	SDL_Texture* panel_bor_tex;
 	SDL_Texture* panel_tex;
 	SDL_Texture* arrow;
+	SDL_Texture* red_light_tex;
 
 	//Sfx
 	uint bonus_fx;

@@ -14,7 +14,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow = starmie2_tex = NULL;
+	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow = starmie2_tex = red_light_tex = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -47,6 +47,7 @@ bool ModuleSceneIntro::Start()
 	panel_bor_tex	= App->textures->Load("pinball/images/border.png");
 	panel_tex		= App->textures->Load("pinball/images/Panel.png");
 	arrow			= App->textures->Load("pinball/images/diagonal_arrow.png");
+	red_light_tex	= App->textures->Load("pinball/images/red_lights.png");
 	
 	
 	//Adding Animations
@@ -255,6 +256,19 @@ void ModuleSceneIntro::AddSceneAnimations()
 	Starmie2.PushBack({  69, 0, 63, 69 });
 	Starmie2.loop = true;
 	Starmie2.speed = 0.05f;
+
+	//Red lights animations
+	//Idle animation for red lights
+	red_light_off.PushBack({ 81, 0, 45, 45 });
+	red_light_off.loop = false;
+
+	//Lights turn on
+	red_light_on.PushBack({ 81, 0, 45, 45 });
+	red_light_on.PushBack({ 0, 0, 45, 45 });
+	red_light_on.loop = true;
+	red_light_on.speed = 0.0025f;
+
+	current_animation = &red_light_off;
 
 }
 
