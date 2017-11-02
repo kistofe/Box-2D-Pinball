@@ -141,13 +141,6 @@ update_status ModuleSceneIntro::Update()
 	if (is_triangle_hit[1] == true)//Right triangle
 		App->renderer->Blit(lit_triangle_tex, 325, 619, NULL);
 
-	//Again texture
-	if (App->player->tries <= 0)
-		App->renderer->Blit(again_tex, 192, 741, NULL);
-
-	
-		
-
 	//----------------------------------------------------------
 
 	// BLIT ANIMATIONS -------------------------------------------
@@ -173,6 +166,10 @@ update_status ModuleSceneIntro::Update()
 
 	//Second Starmie animation
 	App->renderer->Blit(starmie2_tex, 133, 315, &(Starmie2.GetCurrentFrame()));
+
+	//Again panel when you lose
+	if (App->player->tries <= 0)
+		App->renderer->Blit(again_tex, 192, 741, &(again_msg.GetCurrentFrame()));
 
 	// --------------------------------------------------------------
 
@@ -601,6 +598,12 @@ void ModuleSceneIntro::AddSceneAnimations()
 	Starmie2.PushBack({  69, 0, 63, 69 });
 	Starmie2.loop = true;
 	Starmie2.speed = 0.05f;
+
+	//Again message
+	again_msg.PushBack({ 0, 0, 96, 21 });
+	again_msg.PushBack({ 0, 0, 0, 0 });
+	again_msg.loop = true;
+	again_msg.speed = 0.02f;
 	
 }
 

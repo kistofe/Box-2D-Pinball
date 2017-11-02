@@ -52,6 +52,7 @@ public:
 	Animation Starmie2;
 	Animation panel_border;
 	Animation panel;
+	Animation again_msg;
 	
 	bool sensed;
 
