@@ -331,20 +331,21 @@ void ModulePhysics::AddPinballParts()
 	//-------------------------------------------------------------------
 
 	//Part 3 
-	int scenario_shape3[18] = {
-		61, 620,
-		71, 620,
-		71, 686,
-		75, 695,
-		155, 747,
-		121, 764,
-		67, 729,
-		60, 716,
-		60, 625
+	int scenario_shape3[24] = {
+		140, 776,
+		60, 718,
+		60, 623,
+		63, 618,
+		68, 618,
+		70, 623,
+		70, 689,
+		73, 695,
+		156, 751,
+		140, 750,
+		131, 760,
+		145, 778
 	};
-
-
-	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape3, 14));
+	App->scene_intro->pinball.add(CreateChain(0, 0, scenario_shape3, 24));
 	//-------------------------------------------------------------------
 
 	//Part 4 
@@ -470,7 +471,7 @@ void ModulePhysics::AddPinballParts()
 	App->scene_intro->pinball.add(CreateChain(0, 0, secondary_shape2, 8, 2.0f, 20));
 
 	// Circle between flippers
-	App->scene_intro->pinball.add(CreateCircle(240, 835, 5, b2_staticBody));
+	App->scene_intro->pinball.add(CreateCircle(240, 835, 5, b2_staticBody, 1.5f));
 	// -----------------------------------------------------------------
 
 
