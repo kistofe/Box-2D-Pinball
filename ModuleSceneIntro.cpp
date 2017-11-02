@@ -40,18 +40,6 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
 	//Loading Textures
-<<<<<<< HEAD
-	pinball_tex				= App->textures->Load("pinball/images/Pinball.png");
-	dugtrio_tex				= App->textures->Load("pinball/images/dugtrio.png");
-	pikachu_tex				= App->textures->Load("pinball/images/pikachu.png");
-	starmie_tex				= App->textures->Load("pinball/images/starmie.png");
-	starmie2_tex			= App->textures->Load("pinball/images/starmie2.png");
-	panel_bor_tex			= App->textures->Load("pinball/images/border.png");
-	panel_tex				= App->textures->Load("pinball/images/Panel.png");
-	arrow					= App->textures->Load("pinball/images/diagonal_arrow.png");
-	lighted_bouncer_tex		= App->textures->Load("pinball/images/lighted bouncer.png");
-		
-=======
 	pinball_tex			= App->textures->Load("pinball/images/Pinball.png");
 	dugtrio_tex			= App->textures->Load("pinball/images/dugtrio.png");
 	pikachu_tex			= App->textures->Load("pinball/images/pikachu.png");
@@ -59,13 +47,10 @@ bool ModuleSceneIntro::Start()
 	starmie2_tex		= App->textures->Load("pinball/images/starmie2.png");
 	panel_bor_tex		= App->textures->Load("pinball/images/border.png");
 	panel_tex			= App->textures->Load("pinball/images/Panel.png");
-	arrow_tex			= App->textures->Load("pinball/images/diagonal_arrow.png");
-	red_light_tex		= App->textures->Load("pinball/images/red_lights.png");
 	blue_light_tex		= App->textures->Load("pinball/images/blue_light.png");
 	blue_light_off_tex	= App->textures->Load("pinball/images/blue_light_off.png");
-	
-	
->>>>>>> origin/master
+	lighted_bouncer_tex = App->textures->Load("pinball/images/lighted bouncer.png");
+
 	//Adding Animations
 	AddSceneAnimations();
 		
