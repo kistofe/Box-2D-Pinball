@@ -81,8 +81,8 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 
 	for (int i = 0; i < 5; i++)
 	{
-		if (bodyB == App->scene_intro->bluelights[i])
-			App->scene_intro->blue_lights_on[i] = true;
+		if (bodyB == App->scene_intro->roundlights[i])
+			App->scene_intro->round_lights_on[i] = true;
 	}
 
 }
@@ -312,7 +312,7 @@ update_status ModulePlayer::Update()
 		App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
 		for (int i = 0; i < 5; i++)
 		{
-			App->scene_intro->blue_lights_on[i] = false;
+			App->scene_intro->round_lights_on[i] = false;
 		}
 	}
 

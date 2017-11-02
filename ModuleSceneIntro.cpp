@@ -49,7 +49,8 @@ bool ModuleSceneIntro::Start()
 	arrow_tex			= App->textures->Load("pinball/images/diagonal_arrow.png");
 	red_light_tex		= App->textures->Load("pinball/images/red_lights.png");
 	blue_light_tex		= App->textures->Load("pinball/images/blue_light.png");
-	blue_light_off_tex	= App->textures->Load("pinball/images/blue_light_off.png");
+	red_light_tex		= App->textures->Load("pinball/images/red_light.png");
+	light_off_tex		= App->textures->Load("pinball/images/light_off.png");
 	
 	
 	//Adding Animations
@@ -145,26 +146,26 @@ update_status ModuleSceneIntro::Update()
 
 	// Blue lights beside the flippers
 
-	if (blue_lights_on[0])
+	if (round_lights_on[0])
 		App->renderer->Blit(blue_light_tex, 30, 618, NULL);
-	else if (!blue_lights_on[0])
-		App->renderer->Blit(blue_light_off_tex, 30, 618, NULL);
-	if (blue_lights_on[1])
+	else if (!round_lights_on[0])
+		App->renderer->Blit(light_off_tex, 30, 618, NULL);
+	if (round_lights_on[1])
 		App->renderer->Blit(blue_light_tex, 78, 618, NULL);
-	else if (!blue_lights_on[1])
-		App->renderer->Blit(blue_light_off_tex, 78, 618, NULL);
-	if (blue_lights_on[2])
+	else if (!round_lights_on[1])
+		App->renderer->Blit(light_off_tex, 78, 618, NULL);
+	if (round_lights_on[2])
 		App->renderer->Blit(blue_light_tex, 381, 618, NULL);
-	else if (!blue_lights_on[2])
-		App->renderer->Blit(blue_light_off_tex,381, 618, NULL);
-	if (blue_lights_on[3])
+	else if (!round_lights_on[2])
+		App->renderer->Blit(light_off_tex,381, 618, NULL);
+	if (round_lights_on[3])
 		App->renderer->Blit(blue_light_tex, 429, 618, NULL);
-	else if (!blue_lights_on[3])
-		App->renderer->Blit(blue_light_off_tex, 429, 618, NULL);
-	if (blue_lights_on[4])
-		App->renderer->Blit(blue_light_tex, 153, 339, NULL);
-	else if (!blue_lights_on[4])
-		App->renderer->Blit(blue_light_off_tex, 153, 339, NULL);
+	else if (!round_lights_on[3])
+		App->renderer->Blit(light_off_tex, 429, 618, NULL);
+	if (round_lights_on[4])
+		App->renderer->Blit(red_light_tex, 153, 339, NULL);
+	else if (!round_lights_on[4])
+		App->renderer->Blit(light_off_tex, 153, 339, NULL);
 	
 
 
@@ -198,11 +199,11 @@ void ModuleSceneIntro::AddSensors()
 
 	//Blue lights
 
-	bluelights[0] = App->physics->CreateCircleSensor(30, 618, PIXEL_TO_METERS(21), 50);
-	bluelights[1] = App->physics->CreateCircleSensor(78, 618, PIXEL_TO_METERS(21), 50);
-	bluelights[2] = App->physics->CreateCircleSensor(381, 618, PIXEL_TO_METERS(21), 50);
-	bluelights[3] = App->physics->CreateCircleSensor(429, 618, PIXEL_TO_METERS(21), 50);
-	bluelights[4] = App->physics->CreateCircleSensor(105, 332, PIXEL_TO_METERS(21), 30);
+	roundlights[0] = App->physics->CreateCircleSensor(30, 618, PIXEL_TO_METERS(21), 50);
+	roundlights[1] = App->physics->CreateCircleSensor(78, 618, PIXEL_TO_METERS(21), 50);
+	roundlights[2] = App->physics->CreateCircleSensor(381, 618, PIXEL_TO_METERS(21), 50);
+	roundlights[3] = App->physics->CreateCircleSensor(429, 618, PIXEL_TO_METERS(21), 50);
+	roundlights[4] = App->physics->CreateCircleSensor(105, 332, PIXEL_TO_METERS(21), 30);
 
 	// ---------------------------------------------------------------------------------
 

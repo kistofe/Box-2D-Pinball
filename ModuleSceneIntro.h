@@ -39,7 +39,7 @@ public:
 	PhysBody* diglett_sensor1;
 	PhysBody* diglett_sensor2;
 	PhysBody* ball_catcher;
-	PhysBody* bluelights[5];
+	PhysBody* roundlights[5];
 	
 	//Animations
 	Animation Dugtrio_left;
@@ -65,16 +65,16 @@ public:
 	SDL_Texture* panel_bor_tex;
 	SDL_Texture* panel_tex;
 	SDL_Texture* arrow_tex;
-	SDL_Texture* red_light_tex;
 	SDL_Texture* blue_light_tex;
-	SDL_Texture* blue_light_off_tex;
+	SDL_Texture* red_light_tex;
+	SDL_Texture* light_off_tex;
 
 	//Sfx
 	uint bonus_fx;
 	uint lose_ball_fx;
 	uint lose_fx;
 
-	bool blue_lights_on[5] = { false, false, false, false, false };
+	bool round_lights_on[5] = { false, false, false, false, false };
 
 	
 	p2Point<int> ray;
