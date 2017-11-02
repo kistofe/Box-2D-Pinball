@@ -48,16 +48,10 @@ bool ModuleSceneIntro::Start()
 	panel_bor_tex		= App->textures->Load("pinball/images/border.png");
 	panel_tex			= App->textures->Load("pinball/images/Panel.png");
 	blue_light_tex		= App->textures->Load("pinball/images/blue_light.png");
-<<<<<<< HEAD
 	red_light_tex		= App->textures->Load("pinball/images/red_light.png");
 	light_off_tex		= App->textures->Load("pinball/images/light_off.png");
-	
-	
-=======
-	blue_light_off_tex	= App->textures->Load("pinball/images/blue_light_off.png");
 	lighted_bouncer_tex = App->textures->Load("pinball/images/lighted bouncer.png");
 
->>>>>>> origin/master
 	//Adding Animations
 	AddSceneAnimations();
 		
