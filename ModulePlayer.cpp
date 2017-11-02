@@ -74,7 +74,7 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 		score += bodyB->score;
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)//Loop to check collision with bouncers
 	{
 		if (bodyB == App->scene_intro->voltorb_sensor[i])
 		{
@@ -82,9 +82,15 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 		}
 	}
 
-	
-
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 2; i++)//Loop to check collision with triangles
+	{
+		if (bodyB == App->scene_intro->triangle_sensors[i])
+		{
+			App->scene_intro->is_triangle_hit[i] = true;
+		}
+	}
+		
+	for (int i = 0; i < 5; i++)//Loop to check collision with roundlights
 	{
 		if (bodyB == App->scene_intro->roundlights[i])
 			App->scene_intro->round_lights_on[i] = true;

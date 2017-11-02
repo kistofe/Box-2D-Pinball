@@ -48,8 +48,7 @@ public:
 	PhysBody* CreateChain(int x, int y, int* points, int size, float restitution = 0, uint _score = 0);
 	PhysBody* CreateCircleSensor(int x, int y, int radius, uint _score = 0);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, float angle = 0, uint _score = 0);
-	void AddPinballParts();
-
+	
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 

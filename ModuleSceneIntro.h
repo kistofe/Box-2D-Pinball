@@ -21,6 +21,7 @@ public:
 
 private:
 
+	void AddPinballParts();
 	void AddBouncers();
 	void AddSensors();
 	void AddSceneAnimations();
@@ -34,14 +35,13 @@ public:
 	PhysBody* arrow_sensor_right1;
 	PhysBody* arrow_sensor_right2;
 	PhysBody* arrow_sensor_right3;
-	PhysBody* triangle_right;
-	PhysBody* triangle_left;
 	PhysBody* diglett_sensor1;
 	PhysBody* diglett_sensor2;
 	PhysBody* ball_catcher;
 	PhysBody* roundlights[5];
 	PhysBody* voltorb_sensor[3];
 	PhysBody* bluelights[5];
+	PhysBody* triangle_sensors[2];
 
 	
 	//Animations
@@ -69,6 +69,7 @@ public:
 	SDL_Texture* blue_light_tex;
 	SDL_Texture* red_light_tex;
 	SDL_Texture* light_off_tex;
+	SDL_Texture* lit_triangle_tex;
 
 
 	//Sfx
@@ -76,9 +77,11 @@ public:
 	uint lose_ball_fx;
 	uint lose_fx;
 
-	bool round_lights_on[5] = { false, false, false, false, false };
-	bool is_bouncer_hit[3] = { false, false, false };
-	int bouncer_timer[3] = { 0, 0, 0 };
+	bool round_lights_on[5]		= { false, false, false, false, false };
+	bool is_bouncer_hit[3]		= { false, false, false };
+	bool is_triangle_hit[2]		= { false, false};
+	int bouncer_timer[3]		= { 0, 0, 0 };
+	int triangle_timer[2]		= { 0,0 };
 
 	
 	p2Point<int> ray;
