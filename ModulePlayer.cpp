@@ -74,11 +74,17 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 		score += bodyB->score;
 	}
 
-	if (bodyB == App->scene_intro->arrow_sensor_right1 || bodyB == App->scene_intro->arrow_sensor_right2 || bodyB == App->scene_intro->arrow_sensor_right3)//primitive code to blit light arrow->needs to be revised
+	if (bodyB == App->scene_intro->voltorb_sensor[0] || bodyB == App->scene_intro->voltorb_sensor[1] || bodyB == App->scene_intro->voltorb_sensor[2])
 	{
-		light_r_arrow = true;
+		for (int i = 0; i < 3; i++)
+		{
+			if (bodyB == App->scene_intro->voltorb_sensor[i])
+			{
+				has_hitted_bouncer[i] = true;
+			}
+		}
 	}
-
+	
 }
 
 void ModulePlayer::CreateFlippers()

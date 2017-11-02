@@ -14,7 +14,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow = starmie2_tex = red_light_tex = NULL;
+	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow = starmie2_tex = lighted_bouncer_tex = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -32,24 +32,23 @@ bool ModuleSceneIntro::Start()
 	App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
 	
 	//Loading Sfx
-	bonus_fx		= App->audio->LoadFx("pinball/audio/Sfx/bonus.wav");
-	lose_ball_fx	= App->audio->LoadFx("pinball/audio/Sfx/Lose ball.wav");
-	lose_fx			= App->audio->LoadFx("pinball/audio/Sfx/Lose.wav");
+	bonus_fx				= App->audio->LoadFx("pinball/audio/Sfx/bonus.wav");
+	lose_ball_fx			= App->audio->LoadFx("pinball/audio/Sfx/Lose ball.wav");
+	lose_fx					= App->audio->LoadFx("pinball/audio/Sfx/Lose.wav");
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
 	//Loading Textures
-	pinball_tex		= App->textures->Load("pinball/images/Pinball.png");
-	dugtrio_tex		= App->textures->Load("pinball/images/dugtrio.png");
-	pikachu_tex		= App->textures->Load("pinball/images/pikachu.png");
-	starmie_tex		= App->textures->Load("pinball/images/starmie.png");
-	starmie2_tex	= App->textures->Load("pinball/images/starmie2.png");
-	panel_bor_tex	= App->textures->Load("pinball/images/border.png");
-	panel_tex		= App->textures->Load("pinball/images/Panel.png");
-	arrow			= App->textures->Load("pinball/images/diagonal_arrow.png");
-	red_light_tex	= App->textures->Load("pinball/images/red_lights.png");
-	
-	
+	pinball_tex				= App->textures->Load("pinball/images/Pinball.png");
+	dugtrio_tex				= App->textures->Load("pinball/images/dugtrio.png");
+	pikachu_tex				= App->textures->Load("pinball/images/pikachu.png");
+	starmie_tex				= App->textures->Load("pinball/images/starmie.png");
+	starmie2_tex			= App->textures->Load("pinball/images/starmie2.png");
+	panel_bor_tex			= App->textures->Load("pinball/images/border.png");
+	panel_tex				= App->textures->Load("pinball/images/Panel.png");
+	arrow					= App->textures->Load("pinball/images/diagonal_arrow.png");
+	lighted_bouncer_tex		= App->textures->Load("pinball/images/lighted bouncer.png");
+		
 	//Adding Animations
 	AddSceneAnimations();
 		
@@ -77,6 +76,7 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(panel_bor_tex);
 	App->textures->Unload(panel_tex);
 	App->textures->Unload(arrow);
+	App->textures->Unload(lighted_bouncer_tex);
 
 	return true;
 }
@@ -86,31 +86,26 @@ update_status ModuleSceneIntro::Update()
 {
 	
 	// All draw functions ------------------------------------------------------
-	/*p2List_item<PhysBody*>* c = pinball.getFirst();
 	
-	while (c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(pinball_tex, x, y, NULL);
-		break;
-	}
+	//BLIT TEXTURES --------------------------------------------
 
-	/*c = bouncers.getFirst();
-
-	while (c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(bouncer_tex, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}*/
-
-
+	//Pinball Textures
 	App->renderer->Blit(pinball_tex, 0, 0, NULL);
 
-	// Blit Animations -------------------------------------------
+	//Lighted Bouncer Textures
+	if (App->player->has_hitted_bouncer[0] == true)
+		App->renderer->Blit(lighted_bouncer_tex, 190, 250, NULL);
+	
+	if (App->player->has_hitted_bouncer[1] == true)
+		App->renderer->Blit(lighted_bouncer_tex, 270, 220, NULL);
+	
+	if (App->player->has_hitted_bouncer[2] == true)
+		App->renderer->Blit(lighted_bouncer_tex, 250, 308, NULL);
+	
+	//----------------------------------------------------------
+
+	// BLIT ANIMATIONS -------------------------------------------
+
 	//Right dugtrio animation
 	App->renderer->Blit(dugtrio_tex, 411, 500, &(Dugtrio_right.GetCurrentFrame()));
 
@@ -134,42 +129,39 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(starmie2_tex, 133, 315, &(Starmie2.GetCurrentFrame()));
 
 	// --------------------------------------------------------------
-
-	//Check Ball collision to animate scenario ----------------------
-
-	//Red arrows 
-	if (App->player->light_r_arrow)
-		App->renderer->Blit(arrow, 360, 470, NULL);
 	
-
-
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::AddBouncers()
 {
-	bouncers.add(App->physics->CreateCircle(198, 257, 27, b2_staticBody, 1.5f, 20));
-	bouncers.add(App->physics->CreateCircle(274, 227, 27, b2_staticBody, 1.5f, 20));
-	bouncers.add(App->physics->CreateCircle(255, 312, 27, b2_staticBody, 1.5f, 20));
+	bouncers[0] = App->physics->CreateCircle(198, 257, 27, b2_staticBody, 1.5f, 20);
+	bouncers[1] = App->physics->CreateCircle(274, 227, 27, b2_staticBody, 1.5f, 20);
+	bouncers[2] = App->physics->CreateCircle(255, 312, 27, b2_staticBody, 1.5f, 20);
 }
 
 void ModuleSceneIntro::AddSensors()
 {
 	// Creating Dying Sensor
-	
-	dying_sensor = App->physics->CreateRectangleSensor(0, SCREEN_HEIGHT + 50, SCREEN_WIDTH, 50);
+	dying_sensor			= App->physics->CreateRectangleSensor(0, SCREEN_HEIGHT + 50, SCREEN_WIDTH, 50);
+
 	// -------------------------------------------------------------------------------
 	
 	// Creating Animation Sensors
 
 	//Three sensors at the right
-	arrow_sensor_right1 = App->physics->CreateRectangleSensor(350, 515, 40, 43, 90.075);
-	arrow_sensor_right2 = App->physics->CreateRectangleSensor(367, 485, 40, 43, 90.075);
-	arrow_sensor_right3 = App->physics->CreateRectangleSensor(384, 450, 40, 43, 90.075);
+	arrow_sensor_right1		= App->physics->CreateRectangleSensor(350, 515, 40, 43, 90.075);
+	arrow_sensor_right2		= App->physics->CreateRectangleSensor(367, 485, 40, 43, 90.075);
+	arrow_sensor_right3		= App->physics->CreateRectangleSensor(384, 450, 40, 43, 90.075);
 
 	//Triangle sensors
-	triangle_left = App->physics->CreateRectangleSensor(130, 662, 5, 85, 100.0f);//Left triangle
-	triangle_right = App->physics->CreateRectangleSensor(350, 662, 5, 85, -100.0f);//right triangle
+	triangle_left			= App->physics->CreateRectangleSensor(130, 662, 5, 85, 100.0f);//Left triangle
+	triangle_right			= App->physics->CreateRectangleSensor(350, 662, 5, 85, -100.0f);//right triangle
+
+	//Voltorb sensors
+	voltorb_sensor[0]		= App->physics->CreateCircleSensor(198, 256, 29);
+	voltorb_sensor[1]		= App->physics->CreateCircleSensor(274, 227, 29);
+	voltorb_sensor[2]		= App->physics->CreateCircleSensor(255, 312, 29);
 	// ---------------------------------------------------------------------------------
 
 
@@ -178,10 +170,12 @@ void ModuleSceneIntro::AddSensors()
 	//Diglet Sensors
 	diglett_sensor1 = App->physics->CreateCircleSensor(85, 550, 25, 30);
 	diglett_sensor2 = App->physics->CreateCircleSensor(395, 550, 25, 30);
+
 	// ---------------------------------------------------------------------------------
 
 	//Ball catcher sensor
 	ball_catcher = App->physics->CreateCircleSensor(50, 57, 25, 70);
+
 	// --------------------------------------------------------------------------------
 }
 
@@ -256,19 +250,6 @@ void ModuleSceneIntro::AddSceneAnimations()
 	Starmie2.PushBack({  69, 0, 63, 69 });
 	Starmie2.loop = true;
 	Starmie2.speed = 0.05f;
-
-	//Red lights animations
-	//Idle animation for red lights
-	red_light_off.PushBack({ 81, 0, 45, 45 });
-	red_light_off.loop = false;
-
-	//Lights turn on
-	red_light_on.PushBack({ 81, 0, 45, 45 });
-	red_light_on.PushBack({ 0, 0, 45, 45 });
-	red_light_on.loop = true;
-	red_light_on.speed = 0.0025f;
-
-	current_animation = &red_light_off;
-
+	
 }
 
