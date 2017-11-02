@@ -12,7 +12,7 @@
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 
-	ball_tex = flipper_tex = NULL;
+	ball_tex = flipper_tex = launcher_tex = NULL;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -23,8 +23,10 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	ball_tex = App->textures->Load("pinball/images/ball.png");
-	flipper_tex = App->textures->Load("pinball/images/flipper.png");
+	//Loading textures
+	ball_tex		= App->textures->Load("pinball/images/ball.png");
+	flipper_tex		= App->textures->Load("pinball/images/flipper.png");
+	launcher_tex	= App->textures->Load("pinball/images/launcher.png");
 
 	// Calling player functions
 	CreateBall();
@@ -41,6 +43,7 @@ bool ModulePlayer::CleanUp()
 
 	App->textures->Unload(ball_tex);
 	App->textures->Unload(flipper_tex);
+	App->textures->Unload(launcher_tex);
 
 	return true;
 }
@@ -60,8 +63,7 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 			App->audio->PlayFx(App->scene_intro->lose_fx);
 			App->audio->PlayMusic("pinball/audio/Themes/Game Over.ogg");
 		}
-			
-			
+
 	}
 	
 	if (bodyB->score != 0)
@@ -70,10 +72,20 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 		score += bodyB->score;
 	}
 
-	if (bodyB == App->scene_intro->ball_catcher)
+	if (bodyB == App->scene_intro->arrow_sensor_right1 || bodyB == App->scene_intro->arrow_sensor_right2 || bodyB == App->scene_intro->arrow_sensor_right3)//primitive code to blit light arrow->needs to be revised
 	{
-				
+		light_r_arrow = true;
 	}
+
+/*1	while (bodyB == App->scene_intro->triangle_left)
+		triangle_left_is_hit = true;
+
+	triangle_left_is_hit = false;
+
+	while (bodyB == App->scene_intro->triangle_right)
+		triangle_right_is_hit = true;
+
+	triangle_right_is_hit = false;*/
 }
 
 void ModulePlayer::CreateFlippers()
@@ -93,6 +105,7 @@ void ModulePlayer::CreateFlippers()
 	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), 0);			// Set the pivot point of the rectangle where the center of the circle is
 	revoluteJointDef.localAnchorB.Set(0, 0);							// Set the pivot point of the circle on its center
 	revoluteJointDef.collideConnected		= false;
+	revoluteJointDef.referenceAngle = 0;
 
 	revoluteJointDef.enableLimit			= true;						// Angle limits
 	revoluteJointDef.upperAngle				= 210 * DEGTORAD;
@@ -120,6 +133,7 @@ void ModulePlayer::CreateFlippers()
 	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(-30), 0);		// Set the pivot point of the rectangle where the center of the circle is
 	revoluteJointDef.localAnchorB.Set(0, 0);						// Set the pivot point of the circle on its center
 	revoluteJointDef.collideConnected		= false;
+	revoluteJointDef.referenceAngle = 0;
 
 	revoluteJointDef.enableLimit			= true;
 	revoluteJointDef.upperAngle				= 210 * DEGTORAD;			// Angle limits
@@ -139,6 +153,9 @@ void ModulePlayer::CreateFlippers()
 
 void ModulePlayer::CreateLauncher()
 {
+	int x, y;
+	//Create Launcher 2D Body
+	
 	b2RevoluteJointDef revoluteJointDef;
 
 	// Ball launcher		------------------------------------------------------------
@@ -171,6 +188,18 @@ void ModulePlayer::CreateLauncher()
 
 	// ---------------------------------------------------------------------------------
 
+	//Set Launcher's Texture and Animations -------------------------------------------
+
+	//Animations
+	launcher_anim_idle.PushBack({ 0, 0, 42, 110 });
+	launcher_anim_idle.loop = false;
+	launcher_anim_idle.speed = 1.0f;
+	
+	launcher_anim_launching.PushBack({ 54, 0, 42, 110 });
+	launcher_anim_launching.loop = false;
+	launcher_anim_launching.speed = 1.0f;
+
+	current_animation = &launcher_anim_idle;
 
 }
 
@@ -178,12 +207,17 @@ void ModulePlayer::CreateBall()
 {
 	// Create Ball
 	ball = App->physics->CreateCircle(500, 750, 13, b2_dynamicBody, 0.25f);
-	ball->listener = this; //calls OnCollision function
+	ball->listener = this; 
+}
+
+void ModulePlayer::LauncherAnimation()
+{
 }
 
 // Update: draw background
 update_status ModulePlayer::Update()
 {
+		
 	// FLIPPER INPUT	-----------------------------------------
 	
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
@@ -212,48 +246,54 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		jointLauncher->EnableMotor(true);
+		current_animation = &launcher_anim_launching;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
 		jointLauncher->EnableMotor(false);
+		current_animation = &launcher_anim_idle;
 	}
 
 	// ----------------------------------------------------------
 
 	int x, y;
 
-	// FLIPPER BLITS -----------------------------------------
+	// TEXTURE BLITS -----------------------------------------
 	//Left Flipper
-	pivotL->GetPosition(x, y);
-	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, flipperL->GetRotation(), SDL_FLIP_VERTICAL, 2147483647);//Not working
-
+	flipperL->GetPosition(x, y);
+	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, flipperL->GetRotation());
+	
 	//Right Flipper
 	flipperR->GetPosition(x, y);
-	App->renderer->Blit(flipper_tex, x, y, NULL, 1.0f, flipperR->GetRotation(), SDL_FLIP_HORIZONTAL);//Not working
+	App->renderer->Blit(flipper_tex, x - 7, y - 5, NULL, 1.0f, flipperR->GetRotation(), SDL_FLIP_HORIZONTAL);
 	// -------------------------------------------------------
-	
 
-	//BALL BLIT
+	// Set Ball texture
 	ball->GetPosition(x, y);
 	App->renderer->Blit(ball_tex, x, y, NULL, 1.0f, ball->GetRotation());
 
 	// ----------------------------------------------------------
+	
+	//Launcher
+	launcher->GetPosition(x, y);
+	App->renderer->Blit(launcher_tex, x - 3, y, &(current_animation->GetCurrentFrame()));
 
-	// Set score in the title
-	if (tries <= 0)
-	{
-		tries = 0;
-	}
+	// --------------------------------------------------------
+
+	// Set score in the title 
 	if (App->player->tries > 0)
+	{
 		tmp->create("[POKEMON PINBALL] | SCORE: %d | BALLS LEFT: %d", score, tries);
+	}
 	else
+	{
+		tries = 0;//Checking tries don't go negative
 		tmp->create("[POKEMON PINBALL] | YOU LOSE! :( | TOTAL SCORE: %d | ---- Press F5 to Re-start game ----", score);
-
-	App->window->SetTitle(tmp->GetString());
-
+	}
 	// ----------------------------------------------------------
 	
+
 	//Destroy the ball when losing
 	if (must_destroy_ball && tries > 0)
 	{
@@ -263,8 +303,20 @@ update_status ModulePlayer::Update()
 	}
 
 	// ----------------------------------------------------------
-
 	
+	// RE-START GAME -------------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		score = 0;
+		tries = 3;
+		App->scene_intro->panel.Reset();
+		App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
+	}
+
+	// -------------------------------------------------------
+
+	App->window->SetTitle(tmp->GetString());
+
 	return UPDATE_CONTINUE;
 }
 

@@ -1,4 +1,5 @@
 #include "Module.h"
+#include "Animation.h"
 #include "Globals.h"
 #include "p2Point.h"
 #include "p2SString.h"
@@ -29,12 +30,17 @@ private:
 
 	//Function to create ball
 	void CreateBall();
-	
+
+	void LauncherAnimation();
+
 public:
 
+	//Textures
 	SDL_Texture* ball_tex;
 	SDL_Texture* flipper_tex;
+	SDL_Texture* launcher_tex;
 	
+	//Player attributes
 	uint score = 0;
 	uint tries = 3;
 
@@ -47,10 +53,15 @@ public:
 	PhysBody* pivotR;
 	b2RevoluteJoint* jointR;
 
-private:
-
+	//Animations
+	Animation launcher_anim_idle;
+	Animation launcher_anim_launching;
+	Animation* current_animation = nullptr;
 	
+	bool light_r_arrow = false;
 
+private:
+	
 	PhysBody* launcher;
 	PhysBody* launcher_pivot;
 	b2PrismaticJoint* jointLauncher;

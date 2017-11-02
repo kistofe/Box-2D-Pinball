@@ -23,7 +23,7 @@ private:
 
 	void AddBouncers();
 	void AddSensors();
-	void AddAnimations();
+	void AddSceneAnimations();
 
 public:
 	p2List<PhysBody*> pinball;
@@ -32,6 +32,10 @@ public:
 	//sensors
 	PhysBody* dying_sensor;
 	PhysBody* arrow_sensor_right1;
+	PhysBody* arrow_sensor_right2;
+	PhysBody* arrow_sensor_right3;
+	PhysBody* triangle_right;
+	PhysBody* triangle_left;
 	PhysBody* diglett_sensor1;
 	PhysBody* diglett_sensor2;
 	PhysBody* ball_catcher;
@@ -43,10 +47,10 @@ public:
 	Animation Starmie;
 	Animation panel_border;
 	Animation panel;
-	Animation* current_animation = nullptr;
 
 	bool sensed;
 
+	//Textures
 	SDL_Texture* pinball_tex;
 	SDL_Texture* bouncer_tex;
 	SDL_Texture* dugtrio_tex;
@@ -54,7 +58,9 @@ public:
 	SDL_Texture* starmie_tex;
 	SDL_Texture* panel_bor_tex;
 	SDL_Texture* panel_tex;
+	SDL_Texture* arrow;
 
+	//Sfx
 	uint bonus_fx;
 	uint lose_ball_fx;
 	uint lose_fx;

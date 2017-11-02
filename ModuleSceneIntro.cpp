@@ -10,9 +10,11 @@
 #include "ModulePlayer.h"
 #include "ModuleWindow.h"
 
+#include "SDL\include\SDL.h"
+
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = NULL;
+	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -30,26 +32,25 @@ bool ModuleSceneIntro::Start()
 	App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
 	
 	//Loading Sfx
-	bonus_fx = App->audio->LoadFx("pinball/audio/Sfx/bonus.wav");
-	lose_ball_fx = App->audio->LoadFx("pinball/audio/Sfx/Lose ball.wav");
-	lose_fx = App->audio->LoadFx("pinball/audio/Sfx/Lose.wav");
+	bonus_fx		= App->audio->LoadFx("pinball/audio/Sfx/bonus.wav");
+	lose_ball_fx	= App->audio->LoadFx("pinball/audio/Sfx/Lose ball.wav");
+	lose_fx			= App->audio->LoadFx("pinball/audio/Sfx/Lose.wav");
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
 	//Loading Textures
-	pinball_tex = App->textures->Load("pinball/images/Pinball.png");
-	dugtrio_tex = App->textures->Load("pinball/images/dugtrio.png");
-	pikachu_tex = App->textures->Load("pinball/images/pikachu.png");
-	starmie_tex = App->textures->Load("pinball/images/starmie.png");
-	panel_bor_tex = App->textures->Load("pinball/images/border.png");
-	panel_tex = App->textures->Load("pinball/images/Panel.png");
+	pinball_tex		= App->textures->Load("pinball/images/pinball2.png");
+	dugtrio_tex		= App->textures->Load("pinball/images/dugtrio.png");
+	pikachu_tex		= App->textures->Load("pinball/images/pikachu.png");
+	starmie_tex		= App->textures->Load("pinball/images/starmie.png");
+	panel_bor_tex	= App->textures->Load("pinball/images/border.png");
+	panel_tex		= App->textures->Load("pinball/images/Panel.png");
+	arrow			= App->textures->Load("pinball/images/diagonal_arrow.png");
+	
 	
 	//Adding Animations
-	AddAnimations();
-
-	//Sensor Rectangle to detect when the player loses
-	dying_sensor = App->physics->CreateRectangleSensor(0 , SCREEN_HEIGHT +  50, SCREEN_WIDTH, 50);
-	
+	AddSceneAnimations();
+		
 	//Create every scenario part
 	App->physics->AddPinballParts();
 	AddBouncers();
@@ -64,13 +65,15 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
-
-	App->textures->Unload(dugtrio_tex);
+	
+	//Unloading Textures
 	App->textures->Unload(pinball_tex);
+	App->textures->Unload(dugtrio_tex);
 	App->textures->Unload(pikachu_tex);
 	App->textures->Unload(starmie_tex);
 	App->textures->Unload(panel_bor_tex);
 	App->textures->Unload(panel_tex);
+	App->textures->Unload(arrow);
 
 	return true;
 }
@@ -80,7 +83,7 @@ update_status ModuleSceneIntro::Update()
 {
 	
 	// All draw functions ------------------------------------------------------
-	p2List_item<PhysBody*>* c = pinball.getFirst();
+	/*p2List_item<PhysBody*>* c = pinball.getFirst();
 	
 	while (c != NULL)
 	{
@@ -101,7 +104,9 @@ update_status ModuleSceneIntro::Update()
 		c = c->next;
 	}*/
 
-	
+
+	App->renderer->Blit(pinball_tex, 0, 0, NULL);
+
 	// Blit Animations -------------------------------------------
 	//Right dugtrio animation
 	App->renderer->Blit(dugtrio_tex, 411, 500, &(Dugtrio_right.GetCurrentFrame()));
@@ -121,18 +126,16 @@ update_status ModuleSceneIntro::Update()
 
 	//Panel Animation
 	App->renderer->Blit(panel_tex, 171, 501, &(panel.GetCurrentFrame()));
-	// ----------------------------------------------------------
 
-	// RE-START GAME--------------------------------------------
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	{
-		App->player->score = 0;
-		App->player->tries = 3;
-		App->scene_intro->panel.Reset();
-		App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
-	}
+	// --------------------------------------------------------------
 
-	// -------------------------------------------------------
+	//Check Ball collision to animate scenario ----------------------
+
+	//Red arrows 
+	if (App->player->light_r_arrow)
+		App->renderer->Blit(arrow, 360, 470, NULL);
+	
+
 
 	return UPDATE_CONTINUE;
 }
@@ -146,10 +149,21 @@ void ModuleSceneIntro::AddBouncers()
 
 void ModuleSceneIntro::AddSensors()
 {
+	// Creating Dying Sensor
+	
+	dying_sensor = App->physics->CreateRectangleSensor(0, SCREEN_HEIGHT + 50, SCREEN_WIDTH, 50);
+	// -------------------------------------------------------------------------------
+	
 	// Creating Animation Sensors
 
-	arrow_sensor_right1 = App->physics->CreateRectangleSensor(367, 480, 120, 45, 90.075);
+	//Three sensors at the right
+	arrow_sensor_right1 = App->physics->CreateRectangleSensor(350, 515, 40, 43, 90.075);
+	arrow_sensor_right2 = App->physics->CreateRectangleSensor(367, 485, 40, 43, 90.075);
+	arrow_sensor_right3 = App->physics->CreateRectangleSensor(384, 450, 40, 43, 90.075);
 
+	//Triangle sensors
+	triangle_left = App->physics->CreateRectangleSensor(130, 662, 5, 85, 100.0f);//Left triangle
+	triangle_right = App->physics->CreateRectangleSensor(350, 662, 5, 85, -100.0f);//right triangle
 	// ---------------------------------------------------------------------------------
 
 
@@ -165,7 +179,7 @@ void ModuleSceneIntro::AddSensors()
 	// --------------------------------------------------------------------------------
 }
 
-void ModuleSceneIntro::AddAnimations()
+void ModuleSceneIntro::AddSceneAnimations()
 {
 	//Right Dugtrio Animation
 	Dugtrio_right.PushBack({   0, 0, 69, 90 });
@@ -230,6 +244,8 @@ void ModuleSceneIntro::AddAnimations()
 	panel.PushBack({ 444, 500, 138, 90 });
 	panel.loop = true;
 	panel.speed = 0.0025f; 
+
+	//Launcher animation
 
 }
 
