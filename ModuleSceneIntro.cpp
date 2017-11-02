@@ -94,7 +94,7 @@ update_status ModuleSceneIntro::Update()
 		if (is_bouncer_hit[i])
 			bouncer_timer[i]++;
 
-		if (bouncer_timer[i] > 15)
+		if (bouncer_timer[i] > 10)
 		{
 			bouncer_timer[i] = 0;
 			is_bouncer_hit[i] = false;
