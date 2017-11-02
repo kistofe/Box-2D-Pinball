@@ -27,7 +27,7 @@ private:
 
 public:
 	p2List<PhysBody*> pinball;
-	p2List<PhysBody*> bouncers;
+	PhysBody* bouncers[3];
 	
 	//sensors
 	PhysBody* dying_sensor;
@@ -39,7 +39,13 @@ public:
 	PhysBody* diglett_sensor1;
 	PhysBody* diglett_sensor2;
 	PhysBody* ball_catcher;
+<<<<<<< HEAD
 	PhysBody* roundlights[5];
+=======
+	PhysBody* voltorb_sensor[3];
+	PhysBody* bluelights[5];
+
+>>>>>>> origin/master
 	
 	//Animations
 	Animation Dugtrio_left;
@@ -49,10 +55,7 @@ public:
 	Animation Starmie2;
 	Animation panel_border;
 	Animation panel;
-	Animation red_light_off;
-	Animation red_light_on;
-	Animation* current_animation = nullptr;
-
+	
 	bool sensed;
 
 	//Textures
@@ -64,10 +67,16 @@ public:
 	SDL_Texture* starmie2_tex;
 	SDL_Texture* panel_bor_tex;
 	SDL_Texture* panel_tex;
+<<<<<<< HEAD
 	SDL_Texture* arrow_tex;
+=======
+	SDL_Texture* lighted_bouncer_tex;
+	SDL_Texture* red_light_tex;
+>>>>>>> origin/master
 	SDL_Texture* blue_light_tex;
 	SDL_Texture* red_light_tex;
 	SDL_Texture* light_off_tex;
+
 
 	//Sfx
 	uint bonus_fx;

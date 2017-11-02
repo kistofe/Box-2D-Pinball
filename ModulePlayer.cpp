@@ -74,10 +74,14 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 		score += bodyB->score;
 	}
 
-	if (bodyB == App->scene_intro->arrow_sensor_right1 || bodyB == App->scene_intro->arrow_sensor_right2 || bodyB == App->scene_intro->arrow_sensor_right3)//primitive code to blit light arrow->needs to be revised
+	for (int i = 0; i < 3; i++)
 	{
-		light_r_arrow = true;
+		if (bodyB == App->scene_intro->voltorb_sensor[i])
+		{
+			has_hitted_bouncer[i] = true;
+		}
 	}
+	
 
 	for (int i = 0; i < 5; i++)
 	{
