@@ -79,6 +79,12 @@ void ModulePlayer::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 		light_r_arrow = true;
 	}
 
+	for (int i = 0; i < 5; i++)
+	{
+		if (bodyB == App->scene_intro->bluelights[i])
+			App->scene_intro->blue_lights_on[i] = true;
+	}
+
 }
 
 void ModulePlayer::CreateFlippers()
@@ -272,6 +278,8 @@ update_status ModulePlayer::Update()
 
 	// --------------------------------------------------------
 
+
+
 	// Set score in the title 
 	if (App->player->tries > 0)
 	{
@@ -302,6 +310,10 @@ update_status ModulePlayer::Update()
 		tries = 3;
 		App->scene_intro->panel.Reset();
 		App->audio->PlayMusic("pinball/audio/Themes/Field_Theme.ogg");
+		for (int i = 0; i < 5; i++)
+		{
+			App->scene_intro->blue_lights_on[i] = false;
+		}
 	}
 
 	// -------------------------------------------------------

@@ -14,7 +14,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow = starmie2_tex = red_light_tex = NULL;
+	pinball_tex = dugtrio_tex = pikachu_tex = starmie_tex = panel_bor_tex = panel_tex = arrow_tex = starmie2_tex = red_light_tex = blue_light_tex = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -39,15 +39,17 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
 	//Loading Textures
-	pinball_tex		= App->textures->Load("pinball/images/Pinball.png");
-	dugtrio_tex		= App->textures->Load("pinball/images/dugtrio.png");
-	pikachu_tex		= App->textures->Load("pinball/images/pikachu.png");
-	starmie_tex		= App->textures->Load("pinball/images/starmie.png");
-	starmie2_tex	= App->textures->Load("pinball/images/starmie2.png");
-	panel_bor_tex	= App->textures->Load("pinball/images/border.png");
-	panel_tex		= App->textures->Load("pinball/images/Panel.png");
-	arrow			= App->textures->Load("pinball/images/diagonal_arrow.png");
-	red_light_tex	= App->textures->Load("pinball/images/red_lights.png");
+	pinball_tex			= App->textures->Load("pinball/images/Pinball.png");
+	dugtrio_tex			= App->textures->Load("pinball/images/dugtrio.png");
+	pikachu_tex			= App->textures->Load("pinball/images/pikachu.png");
+	starmie_tex			= App->textures->Load("pinball/images/starmie.png");
+	starmie2_tex		= App->textures->Load("pinball/images/starmie2.png");
+	panel_bor_tex		= App->textures->Load("pinball/images/border.png");
+	panel_tex			= App->textures->Load("pinball/images/Panel.png");
+	arrow_tex			= App->textures->Load("pinball/images/diagonal_arrow.png");
+	red_light_tex		= App->textures->Load("pinball/images/red_lights.png");
+	blue_light_tex		= App->textures->Load("pinball/images/blue_light.png");
+	blue_light_off_tex	= App->textures->Load("pinball/images/blue_light_off.png");
 	
 	
 	//Adding Animations
@@ -76,7 +78,7 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(starmie2_tex);
 	App->textures->Unload(panel_bor_tex);
 	App->textures->Unload(panel_tex);
-	App->textures->Unload(arrow);
+	App->textures->Unload(arrow_tex);
 
 	return true;
 }
@@ -139,7 +141,30 @@ update_status ModuleSceneIntro::Update()
 
 	//Red arrows 
 	if (App->player->light_r_arrow)
-		App->renderer->Blit(arrow, 360, 470, NULL);
+		App->renderer->Blit(arrow_tex, 360, 470, NULL);
+
+	// Blue lights beside the flippers
+
+	if (blue_lights_on[0])
+		App->renderer->Blit(blue_light_tex, 30, 618, NULL);
+	else if (!blue_lights_on[0])
+		App->renderer->Blit(blue_light_off_tex, 30, 618, NULL);
+	if (blue_lights_on[1])
+		App->renderer->Blit(blue_light_tex, 78, 618, NULL);
+	else if (!blue_lights_on[1])
+		App->renderer->Blit(blue_light_off_tex, 78, 618, NULL);
+	if (blue_lights_on[2])
+		App->renderer->Blit(blue_light_tex, 381, 618, NULL);
+	else if (!blue_lights_on[2])
+		App->renderer->Blit(blue_light_off_tex,381, 618, NULL);
+	if (blue_lights_on[3])
+		App->renderer->Blit(blue_light_tex, 429, 618, NULL);
+	else if (!blue_lights_on[3])
+		App->renderer->Blit(blue_light_off_tex, 429, 618, NULL);
+	if (blue_lights_on[4])
+		App->renderer->Blit(blue_light_tex, 153, 339, NULL);
+	else if (!blue_lights_on[4])
+		App->renderer->Blit(blue_light_off_tex, 153, 339, NULL);
 	
 
 
@@ -170,12 +195,21 @@ void ModuleSceneIntro::AddSensors()
 	//Triangle sensors
 	triangle_left = App->physics->CreateRectangleSensor(130, 662, 5, 85, 100.0f);//Left triangle
 	triangle_right = App->physics->CreateRectangleSensor(350, 662, 5, 85, -100.0f);//right triangle
+
+	//Blue lights
+
+	bluelights[0] = App->physics->CreateCircleSensor(30, 618, PIXEL_TO_METERS(21));
+	bluelights[1] = App->physics->CreateCircleSensor(78, 618, PIXEL_TO_METERS(21));
+	bluelights[2] = App->physics->CreateCircleSensor(381, 618, PIXEL_TO_METERS(21));
+	bluelights[3] = App->physics->CreateCircleSensor(429, 618, PIXEL_TO_METERS(21));
+	bluelights[4] = App->physics->CreateCircleSensor(105, 332, PIXEL_TO_METERS(21));
+
 	// ---------------------------------------------------------------------------------
 
 
 	//Creating other Sensors
 
-	//Diglet Sensors
+	//Diglett Sensors
 	diglett_sensor1 = App->physics->CreateCircleSensor(85, 550, 25, 30);
 	diglett_sensor2 = App->physics->CreateCircleSensor(395, 550, 25, 30);
 	// ---------------------------------------------------------------------------------
