@@ -293,7 +293,7 @@ update_status ModulePlayer::Update()
 	else
 	{
 		tries = 0;//Checking tries don't go negative
-		tmp->create("[POKEMON PINBALL] | YOU LOSE! :( | TOTAL SCORE: %d | ---- Press F5 to Re-start game ----", score);
+		tmp->create("[POKEMON PINBALL] | YOU LOSE! :( | TOTAL SCORE: %d | ---- Press R to Re-start game ----", score);
 	}
 	// ----------------------------------------------------------
 	
@@ -309,7 +309,7 @@ update_status ModulePlayer::Update()
 	// ----------------------------------------------------------
 	
 	// RE-START GAME -------------------------------------------
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 	{
 		score = 0;
 		tries = 3;
@@ -319,6 +319,14 @@ update_status ModulePlayer::Update()
 		{
 			App->scene_intro->round_lights_on[i] = false;
 		}
+	}
+
+	// DEBUG FEATURES -------------------------------------------
+
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		LOG("Maximum lives for you.")
+		tries = 99;
 	}
 
 	// -------------------------------------------------------
