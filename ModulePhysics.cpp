@@ -80,13 +80,15 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type,
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type, float restitution, uint _score)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, float angle, b2BodyType type, float restitution, uint _score)
 {
 	b2BodyDef body;
 	body.type = type;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
+	b->SetTransform(body.position, angle);
+
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
 
@@ -419,8 +421,8 @@ void ModulePhysics::AddPinballParts()
 	//-------------------------------------------------------------------
 
 	//Part 7 & 8
-	App->scene_intro->pinball.add(CreateRectangle(207, 167, 18, 55, b2_staticBody));
-	App->scene_intro->pinball.add(CreateRectangle(273, 152, 18, 45, b2_staticBody));
+	App->scene_intro->pinball.add(CreateRectangle(207, 167, 18, 55, 0, b2_staticBody));
+	App->scene_intro->pinball.add(CreateRectangle(273, 152, 18, 45, 0, b2_staticBody));
 	//-------------------------------------------------------------------
 
 	//Part 9
@@ -463,6 +465,9 @@ void ModulePhysics::AddPinballParts()
 	};
 
 	App->scene_intro->pinball.add(CreateChain(0, 0, secondary_shape2, 8, 2.0f, 20));
+
+	// Circle between flippers
+	App->scene_intro->pinball.add(CreateCircle(240, 835, 5, b2_staticBody));
 	// -----------------------------------------------------------------
 
 

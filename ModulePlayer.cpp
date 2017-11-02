@@ -83,8 +83,8 @@ void ModulePlayer::CreateFlippers()
 	b2RevoluteJointDef revoluteJointDef;
 	
 
-	flipperL								= App->physics->CreateRectangle(170, 770, 65, 20);
-	pivotL									= App->physics->CreateCircle(170, 770, 10, b2_staticBody);
+	flipperL								= App->physics->CreateRectangle(220, 772, 65, 20);
+	pivotL									= App->physics->CreateCircle(167, 772, 10, b2_staticBody);
 	flipperL->body->SetGravityScale(30.0f);
 
 	revoluteJointDef.bodyA					= flipperL->body;
@@ -110,7 +110,7 @@ void ModulePlayer::CreateFlippers()
 	// Right flipper		------------------------------------------------------------
 
 
-	flipperR								= App->physics->CreateRectangle(312, 700, 65, 20);
+	flipperR								= App->physics->CreateRectangle(200, 770, 65, 20);
 	pivotR									= App->physics->CreateCircle(312, 770, 10, b2_staticBody);
 	flipperR->body->SetGravityScale(30.0f);
 	
@@ -144,7 +144,7 @@ void ModulePlayer::CreateLauncher()
 	// Ball launcher		------------------------------------------------------------
 
 	launcher = App->physics->CreateRectangle(500, 780, 30, 80);
-	launcher_pivot = App->physics->CreateRectangle(500, 830, 30, 20, b2_staticBody);
+	launcher_pivot = App->physics->CreateRectangle(500, 830, 30, 20, 0, b2_staticBody);
 
 	b2PrismaticJointDef prismaticJointDef;
 
